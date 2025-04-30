@@ -45,6 +45,7 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
             ref={inputRef}
             autoComplete="off"
             autoFocus
+            aria-label="Terminal command input"
           />
           <span className="cursor absolute right-0 top-0 w-2 h-5 bg-terminal-green inline-block animate-blink"></span>
         </div>

@@ -26,6 +26,7 @@ const Terminal = () => {
   const [currentPath, setCurrentPath] = useState('~');
   const inputRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   // Commands
   const about = (
@@ -223,12 +224,23 @@ const Terminal = () => {
     setHistory(prev => [...prev, { command: cmd, response }]);
     setInput('');
     
-    // Scroll to bottom
+    // Scroll to bottom after a short delay to ensure DOM is updated
     setTimeout(() => {
-      if (contentRef.current) {
-        contentRef.current.scrollTop = contentRef.current.scrollHeight;
+      scrollToBottom();
+    }, 10);
+  };
+
+  // Scroll to bottom of terminal
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
       }
-    }, 0);
+    }
+    if (contentRef.current) {
+      contentRef.current.scrollTop = contentRef.current.scrollHeight;
+    }
   };
 
   // Handle form submission
@@ -244,12 +256,18 @@ const Terminal = () => {
     }
   };
 
-  // Auto-focus input on mount
+  // Auto-focus input on mount and scroll to bottom
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
+    scrollToBottom();
   }, []);
+
+  // Scroll to bottom whenever history changes
+  useEffect(() => {
+    scrollToBottom();
+  }, [history]);
 
   return (
     <div 
@@ -257,7 +275,7 @@ const Terminal = () => {
       onClick={focusInput}
     >
       <TerminalHeader title={`${aboutData.name.toLowerCase()}@portfolio:~$`} />
-      <ScrollArea className="h-[calc(80vh-32px)]">
+      <ScrollArea className="h-[calc(80vh-32px)]" ref={scrollAreaRef}>
         <TerminalContent 
           history={history} 
           currentPath={currentPath} 
