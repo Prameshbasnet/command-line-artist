@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -96,6 +99,43 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-terminal-black text-terminal-green font-mono;
+  }
+
+  .terminal-window {
+    @apply bg-terminal-black border border-terminal-gray rounded-md overflow-hidden;
+  }
+
+  .terminal-header {
+    @apply bg-terminal-darkgray p-2 flex items-center;
+  }
+
+  .terminal-content {
+    @apply p-4 overflow-y-auto;
+  }
+
+  .terminal-prompt {
+    @apply flex items-center;
+  }
+
+  .cursor {
+    @apply w-2 h-5 bg-terminal-green inline-block animate-blink;
+  }
+
+  .command {
+    @apply text-terminal-green;
+  }
+
+  .response {
+    @apply text-terminal-gray mb-4;
+  }
+}
+
+@layer components {
+  .typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0 auto;
+    animation: typewriter 3s steps(40, end);
   }
 }
