@@ -187,6 +187,13 @@ const Terminal = () => {
   const executeCommand = (cmd: string) => {
     const command = cmd.trim().toLowerCase();
     
+    // Special handling for clear command
+    if (command === 'clear') {
+      setHistory([]);
+      setInput('');
+      return;
+    }
+    
     let response: React.ReactNode;
     
     switch (command) {
@@ -211,9 +218,6 @@ const Terminal = () => {
       case 'help':
         response = help;
         break;
-      case 'clear':
-        setHistory([]);
-        return;
       case '':
         response = null;
         break;
