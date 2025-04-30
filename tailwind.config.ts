@@ -64,15 +64,16 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				terminal: {
-					black: '#0D0208',
+					black: '#0D0D12',
 					green: '#4AF626',
 					blue: '#00C2BA',
 					gray: '#CCCCCC',
-					darkgray: '#333333'
+					darkgray: '#2B2B2B'
 				}
 			},
 			fontFamily: {
-				mono: ['JetBrains Mono', 'monospace'],
+				mono: ['JetBrains Mono', 'Ubuntu Mono', 'monospace'],
+				ubuntu: ['Ubuntu Mono', 'monospace'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

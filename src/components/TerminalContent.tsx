@@ -21,30 +21,33 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
   contentRef
 }) => {
   return (
-    <div className="terminal-content h-full overflow-y-auto" ref={contentRef}>
+    <div className="terminal-content p-4 font-mono" ref={contentRef}>
       {history.map((item, index) => (
-        <div key={index}>
+        <div key={index} className="mb-3">
           {item.command && (
-            <div className="terminal-prompt mb-1">
-              <span className="text-terminal-blue mr-2">guest@portfolio:{currentPath}$</span>
-              <span className="command">{item.command}</span>
+            <div className="terminal-prompt mb-1 flex">
+              <span className="text-terminal-blue mr-1">guest@portfolio:{currentPath}$</span>
+              <span className="command text-terminal-green">{item.command}</span>
             </div>
           )}
-          <div className="response">{item.response}</div>
+          <div className="response pl-0">{item.response}</div>
         </div>
       ))}
       
-      <form onSubmit={handleSubmit} className="terminal-prompt">
-        <span className="text-terminal-blue mr-2">guest@portfolio:{currentPath}$</span>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="command flex-1 bg-transparent border-none outline-none text-terminal-green"
-          ref={inputRef}
-          autoComplete="off"
-          autoFocus
-        />
+      <form onSubmit={handleSubmit} className="terminal-prompt flex">
+        <span className="text-terminal-blue mr-1">guest@portfolio:{currentPath}$</span>
+        <div className="relative flex-1">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="command flex-1 bg-transparent border-none outline-none text-terminal-green w-full pr-2"
+            ref={inputRef}
+            autoComplete="off"
+            autoFocus
+          />
+          <span className="cursor absolute right-0 top-0 w-2 h-5 bg-terminal-green inline-block animate-blink"></span>
+        </div>
       </form>
     </div>
   );

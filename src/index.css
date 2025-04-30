@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -103,7 +104,8 @@
   }
 
   .terminal-window {
-    @apply bg-terminal-black border border-terminal-gray rounded-md overflow-hidden;
+    @apply bg-terminal-black border border-terminal-darkgray rounded-md overflow-hidden shadow-lg;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
 
   .terminal-header {
@@ -111,7 +113,7 @@
   }
 
   .terminal-content {
-    @apply p-4 overflow-y-auto;
+    @apply p-4 overflow-y-auto font-ubuntu;
   }
 
   .terminal-prompt {
@@ -137,5 +139,20 @@
     white-space: nowrap;
     margin: 0 auto;
     animation: typewriter 3s steps(40, end);
+  }
+}
+
+@layer utilities {
+  .font-ubuntu {
+    font-family: 'Ubuntu Mono', monospace;
+  }
+}
+
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
   }
 }

@@ -7,6 +7,7 @@ import { skillsData } from '../data/skills';
 import { projectsData } from '../data/projects';
 import { experienceData } from '../data/experience';
 import { educationData } from '../data/education';
+import { ScrollArea } from './ui/scroll-area';
 
 const Terminal = () => {
   const [history, setHistory] = useState<{ command: string; response: React.ReactNode }[]>([
@@ -14,8 +15,9 @@ const Terminal = () => {
       command: '', 
       response: (
         <div className="mb-4 typewriter">
-          <p className="text-terminal-blue">Welcome to my terminal portfolio!</p>
-          <p>Type <span className="text-terminal-blue">help</span> to see available commands.</p>
+          <p className="text-terminal-green">Welcome to <span className="text-terminal-blue font-bold">{aboutData.name.toLowerCase()}'s</span> terminal portfolio!</p>
+          <p className="mt-1">Type <span className="text-terminal-blue font-semibold">help</span> to see available commands.</p>
+          <p className="mt-1 text-terminal-gray text-xs">Last login: {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</p>
         </div>
       ) 
     }
@@ -29,50 +31,57 @@ const Terminal = () => {
   const about = (
     <div className="mb-4">
       <p className="mb-2 text-terminal-blue font-bold">{aboutData.name}</p>
-      <p className="mb-1">{aboutData.location} • {aboutData.phone} • {aboutData.email}</p>
-      <p className="mb-2">{aboutData.website}</p>
-      <p className="mb-2">• {aboutData.linkedin} • {aboutData.github}</p>
-      <p className="mt-4">{aboutData.summary}</p>
+      <div className="pl-2 border-l-2 border-terminal-darkgray">
+        <p className="mb-1">{aboutData.location} • {aboutData.phone}</p>
+        <p className="mb-1">{aboutData.email}</p>
+        <p className="mb-1">{aboutData.website}</p>
+        <p className="mb-2">
+          <a href={aboutData.linkedin} target="_blank" rel="noopener noreferrer" className="text-terminal-blue hover:underline">LinkedIn</a> • 
+          <a href={aboutData.github} target="_blank" rel="noopener noreferrer" className="text-terminal-blue hover:underline ml-2">GitHub</a>
+        </p>
+        <p className="mt-4 text-terminal-gray">{aboutData.summary}</p>
+      </div>
     </div>
   );
 
   const skills = (
     <div className="mb-4">
-      <p className="mb-2 text-terminal-blue">Technical Skills:</p>
-      
-      <div className="mb-2">
-        <p className="font-medium">Languages & Frameworks:</p>
-        <p className="pl-4">{skillsData.languages.join(', ')}</p>
-      </div>
-      
-      <div className="mb-2">
-        <p className="font-medium">Databases:</p>
-        <p className="pl-4">{skillsData.databases.join(', ')}</p>
-      </div>
-      
-      <div className="mb-2">
-        <p className="font-medium">Tools & Platforms:</p>
-        <p className="pl-4">{skillsData.tools.join(', ')}</p>
-      </div>
-      
-      <div className="mb-2">
-        <p className="font-medium">Other:</p>
-        <p className="pl-4">{skillsData.other.join(', ')}</p>
+      <p className="mb-2 text-terminal-blue font-bold">Technical Skills:</p>
+      <div className="pl-2 border-l-2 border-terminal-darkgray">
+        <div className="mb-2">
+          <p className="font-medium text-terminal-green">Languages & Frameworks:</p>
+          <p className="pl-4 text-terminal-gray">{skillsData.languages.join(', ')}</p>
+        </div>
+        
+        <div className="mb-2">
+          <p className="font-medium text-terminal-green">Databases:</p>
+          <p className="pl-4 text-terminal-gray">{skillsData.databases.join(', ')}</p>
+        </div>
+        
+        <div className="mb-2">
+          <p className="font-medium text-terminal-green">Tools & Platforms:</p>
+          <p className="pl-4 text-terminal-gray">{skillsData.tools.join(', ')}</p>
+        </div>
+        
+        <div className="mb-2">
+          <p className="font-medium text-terminal-green">Other:</p>
+          <p className="pl-4 text-terminal-gray">{skillsData.other.join(', ')}</p>
+        </div>
       </div>
     </div>
   );
 
   const projects = (
     <div className="mb-4">
-      <p className="mb-2 text-terminal-blue">Projects:</p>
+      <p className="mb-2 text-terminal-blue font-bold">Projects:</p>
       
       {projectsData.map((project, index) => (
-        <div key={index} className="mb-3">
-          <p className="font-bold">{project.name}</p>
-          <p className="pl-4 italic">Technologies: {project.technologies}</p>
-          <ul className="list-disc list-inside pl-4">
+        <div key={index} className="mb-3 pl-2 border-l-2 border-terminal-darkgray">
+          <p className="font-bold text-terminal-green">{project.name}</p>
+          <p className="pl-4 italic text-xs text-terminal-gray">Technologies: {project.technologies}</p>
+          <ul className="list-disc list-inside pl-4 text-terminal-gray">
             {project.description.map((item, i) => (
-              <li key={i}>{item}</li>
+              <li key={i} className="text-sm">{item}</li>
             ))}
           </ul>
         </div>
@@ -82,17 +91,17 @@ const Terminal = () => {
 
   const experience = (
     <div className="mb-4">
-      <p className="mb-2 text-terminal-blue">Work Experience:</p>
+      <p className="mb-2 text-terminal-blue font-bold">Work Experience:</p>
       
       {experienceData.map((job, index) => (
-        <div key={index} className="mb-3">
+        <div key={index} className="mb-3 pl-2 border-l-2 border-terminal-darkgray">
           <div className="flex justify-between">
-            <p className="font-bold">{job.title}</p>
-            <p>{job.period}</p>
+            <p className="font-bold text-terminal-green">{job.title}</p>
+            <p className="text-terminal-gray text-sm">{job.period}</p>
           </div>
-          <ul className="list-disc list-inside pl-4">
+          <ul className="list-disc list-inside pl-4 text-terminal-gray">
             {job.responsibilities.map((responsibility, i) => (
-              <li key={i}>{responsibility}</li>
+              <li key={i} className="text-sm">{responsibility}</li>
             ))}
           </ul>
         </div>
@@ -102,15 +111,15 @@ const Terminal = () => {
 
   const education = (
     <div className="mb-4">
-      <p className="mb-2 text-terminal-blue">Education:</p>
+      <p className="mb-2 text-terminal-blue font-bold">Education:</p>
       
       {educationData.map((edu, index) => (
-        <div key={index} className="mb-2">
+        <div key={index} className="mb-2 pl-2 border-l-2 border-terminal-darkgray">
           <div className="flex justify-between">
-            <p className="font-bold">{edu.degree}</p>
-            <p>{edu.period}</p>
+            <p className="font-bold text-terminal-green">{edu.degree}</p>
+            <p className="text-terminal-gray text-sm">{edu.period}</p>
           </div>
-          <p>{edu.institution}</p>
+          <p className="text-terminal-gray">{edu.institution}</p>
         </div>
       ))}
     </div>
@@ -118,28 +127,58 @@ const Terminal = () => {
 
   const contact = (
     <div className="mb-4">
-      <p className="mb-2 text-terminal-blue">Contact Information:</p>
-      <p>Email: {aboutData.email}</p>
-      <p>Phone: {aboutData.phone}</p>
-      <p>GitHub: {aboutData.github}</p>
-      <p>LinkedIn: {aboutData.linkedin}</p>
-      <p>Website: {aboutData.website}</p>
+      <p className="mb-2 text-terminal-blue font-bold">Contact Information:</p>
+      <div className="pl-2 border-l-2 border-terminal-darkgray">
+        <p className="text-terminal-gray"><span className="text-terminal-green">Email:</span> {aboutData.email}</p>
+        <p className="text-terminal-gray"><span className="text-terminal-green">Phone:</span> {aboutData.phone}</p>
+        <p className="text-terminal-gray"><span className="text-terminal-green">GitHub:</span> <a href={aboutData.github} target="_blank" rel="noopener noreferrer" className="text-terminal-blue hover:underline">{aboutData.github}</a></p>
+        <p className="text-terminal-gray"><span className="text-terminal-green">LinkedIn:</span> <a href={aboutData.linkedin} target="_blank" rel="noopener noreferrer" className="text-terminal-blue hover:underline">{aboutData.linkedin}</a></p>
+        <p className="text-terminal-gray"><span className="text-terminal-green">Website:</span> <a href={aboutData.website} target="_blank" rel="noopener noreferrer" className="text-terminal-blue hover:underline">{aboutData.website}</a></p>
+      </div>
     </div>
   );
 
   const help = (
     <div className="mb-4">
-      <p className="mb-2 text-terminal-blue">Available commands:</p>
-      <ul>
-        <li><span className="text-terminal-blue">about</span> - Learn about me</li>
-        <li><span className="text-terminal-blue">skills</span> - View my technical skills</li>
-        <li><span className="text-terminal-blue">projects</span> - See my projects</li>
-        <li><span className="text-terminal-blue">experience</span> - View my work experience</li>
-        <li><span className="text-terminal-blue">education</span> - See my educational background</li>
-        <li><span className="text-terminal-blue">contact</span> - Get my contact info</li>
-        <li><span className="text-terminal-blue">clear</span> - Clear the terminal</li>
-        <li><span className="text-terminal-blue">help</span> - Show this help message</li>
-      </ul>
+      <p className="mb-2 text-terminal-blue font-bold">Available commands:</p>
+      <div className="pl-2 border-l-2 border-terminal-darkgray">
+        <table className="table-auto border-collapse">
+          <tbody>
+            <tr>
+              <td className="pr-4 text-terminal-blue">about</td>
+              <td className="text-terminal-gray">Learn about me</td>
+            </tr>
+            <tr>
+              <td className="pr-4 text-terminal-blue">skills</td>
+              <td className="text-terminal-gray">View my technical skills</td>
+            </tr>
+            <tr>
+              <td className="pr-4 text-terminal-blue">projects</td>
+              <td className="text-terminal-gray">See my projects</td>
+            </tr>
+            <tr>
+              <td className="pr-4 text-terminal-blue">experience</td>
+              <td className="text-terminal-gray">View my work experience</td>
+            </tr>
+            <tr>
+              <td className="pr-4 text-terminal-blue">education</td>
+              <td className="text-terminal-gray">See my educational background</td>
+            </tr>
+            <tr>
+              <td className="pr-4 text-terminal-blue">contact</td>
+              <td className="text-terminal-gray">Get my contact info</td>
+            </tr>
+            <tr>
+              <td className="pr-4 text-terminal-blue">clear</td>
+              <td className="text-terminal-gray">Clear the terminal</td>
+            </tr>
+            <tr>
+              <td className="pr-4 text-terminal-blue">help</td>
+              <td className="text-terminal-gray">Show this help message</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 
@@ -214,19 +253,21 @@ const Terminal = () => {
 
   return (
     <div 
-      className="terminal-window max-w-4xl w-full mx-auto my-8 shadow-lg h-[80vh]"
+      className="terminal-window max-w-4xl w-full mx-auto my-8 shadow-lg h-[80vh] rounded-md overflow-hidden border border-terminal-darkgray"
       onClick={focusInput}
     >
-      <TerminalHeader title={`${aboutData.name.toLowerCase()}.sh`} />
-      <TerminalContent 
-        history={history} 
-        currentPath={currentPath} 
-        input={input} 
-        setInput={setInput}
-        handleSubmit={handleSubmit}
-        inputRef={inputRef}
-        contentRef={contentRef}
-      />
+      <TerminalHeader title={`${aboutData.name.toLowerCase()}@portfolio:~$`} />
+      <ScrollArea className="h-[calc(80vh-32px)]">
+        <TerminalContent 
+          history={history} 
+          currentPath={currentPath} 
+          input={input} 
+          setInput={setInput}
+          handleSubmit={handleSubmit}
+          inputRef={inputRef}
+          contentRef={contentRef}
+        />
+      </ScrollArea>
     </div>
   );
 };
