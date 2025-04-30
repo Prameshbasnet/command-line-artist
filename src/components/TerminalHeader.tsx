@@ -7,7 +7,7 @@ interface TerminalHeaderProps {
 
 const TerminalHeader: React.FC<TerminalHeaderProps> = ({ title }) => {
   return (
-    <div className="terminal-header">
+    <div className="terminal-header bg-terminal-header p-2 flex items-center rounded-t-md">
       <div className="flex space-x-2 mr-4">
         <div className="w-3 h-3 rounded-full bg-red-500"></div>
         <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
