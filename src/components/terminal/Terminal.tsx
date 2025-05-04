@@ -2,9 +2,9 @@
 import React from 'react';
 import TerminalHeader from './TerminalHeader';
 import TerminalContent from './TerminalContent';
-import { aboutData } from '../../data/about';
 import { ScrollArea } from '../ui/scroll-area';
 import { useTerminal } from './useTerminal';
+import { aboutData } from '../../data/about';
 
 const Terminal = () => {
   const {
