@@ -109,7 +109,9 @@ export const useTerminal = () => {
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    executeCommand(input);
+    if (input.trim()) {
+      executeCommand(input);
+    }
   };
 
   // Focus input on terminal click
