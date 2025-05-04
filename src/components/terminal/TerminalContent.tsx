@@ -23,7 +23,7 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
 }) => {
   const commandLineRef = useRef<HTMLFormElement>(null);
   
-  // Animate new commands as they come in
+  // Animate new commands as they come in using GSAP
   useEffect(() => {
     if (history.length > 0 && commandLineRef.current) {
       gsap.from(commandLineRef.current, {

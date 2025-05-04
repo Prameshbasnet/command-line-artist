@@ -29,15 +29,30 @@ export const useTerminal = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  // Initialize GSAP animation
+  // Enhanced GSAP animation for terminal appearance
   useEffect(() => {
     if (terminalRef.current) {
-      gsap.from(terminalRef.current, {
-        duration: 1,
-        y: -50,
+      // Create a timeline for more complex animations
+      const tl = gsap.timeline();
+      
+      tl.from(terminalRef.current, {
+        duration: 0.8,
+        y: -30,
         opacity: 0,
         ease: "power3.out"
       });
+      
+      // Find elements inside the terminal for staggered animation
+      const elements = terminalRef.current.querySelectorAll('.typewriter *');
+      if (elements.length) {
+        tl.from(elements, {
+          opacity: 0,
+          y: 15,
+          stagger: 0.1,
+          duration: 0.4,
+          ease: "power2.out"
+        }, "-=0.4");
+      }
     }
   }, []);
 
@@ -52,12 +67,10 @@ export const useTerminal = () => {
       return;
     }
     
-    let response: React.ReactNode;
-    
     // Process the command
-    response = processCommand(command);
+    const response = processCommand(command);
     
-    // Animate the new command response with GSAP
+    // Create new history item
     const newHistoryItem = { command: cmd, response };
     setHistory(prev => [...prev, newHistoryItem]);
     setInput('');
@@ -71,8 +84,8 @@ export const useTerminal = () => {
       if (responseElements.length > 0) {
         const lastResponse = responseElements[responseElements.length - 1];
         gsap.from(lastResponse, {
-          duration: 0.5,
-          y: 20,
+          duration: 0.4,
+          y: 15,
           opacity: 0,
           ease: "power2.out"
         });

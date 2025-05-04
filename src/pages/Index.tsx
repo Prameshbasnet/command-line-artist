@@ -15,7 +15,7 @@ const Index = () => {
       tl.from(pageRef.current.children, {
         opacity: 0,
         y: 20,
-        duration: 1,
+        duration: 0.8,
         stagger: 0.2,
         ease: "power3.out"
       });
