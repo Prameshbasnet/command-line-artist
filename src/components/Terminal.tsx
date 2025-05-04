@@ -1,13 +1,80 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 import TerminalHeader from './TerminalHeader';
 import TerminalContent from './TerminalContent';
 import { aboutData } from '../data/about';
-import { skillsData } from '../data/skills';
-import { projectsData } from '../data/projects';
-import { experienceData } from '../data/experience';
-import { educationData } from '../data/education';
+import { about, skills, projects, experience, education, contact } from '../commands/baseCommands';
+import { RockPaperScissors, DiceRoller, NumberGuesser, gamesHelp } from '../commands/gameCommands';
+import { UUIDGenerator, DateTimeInfo, IPInfo, utilsHelp } from '../commands/utilCommands';
 import { ScrollArea } from './ui/scroll-area';
+import { Terminal as TerminalIcon, Code, Gamepad, Square } from 'lucide-react';
+
+// Help menu
+const help = (
+  <div className="mb-4">
+    <p className="mb-2 text-terminal-blue font-bold">Available command categories:</p>
+    <div className="pl-2 border-l-2 border-terminal-darkgray">
+      <table className="table-auto border-collapse">
+        <tbody>
+          <tr>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1"><TerminalIcon className="w-4 h-4" /> basic</td>
+            <td className="text-terminal-gray">Basic portfolio commands (about, skills, projects, etc.)</td>
+          </tr>
+          <tr>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Gamepad className="w-4 h-4" /> games</td>
+            <td className="text-terminal-gray">Fun games to play in the terminal</td>
+          </tr>
+          <tr>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Code className="w-4 h-4" /> utils</td>
+            <td className="text-terminal-gray">Utility commands (uuid, datetime, etc.)</td>
+          </tr>
+          <tr>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Square className="w-4 h-4" /> clear</td>
+            <td className="text-terminal-gray">Clear the terminal</td>
+          </tr>
+        </tbody>
+      </table>
+      <p className="mt-2 text-terminal-gray">Type 'basic', 'games', or 'utils' to see specific commands in each category</p>
+    </div>
+  </div>
+);
+
+const basicHelp = (
+  <div className="mb-4">
+    <p className="mb-2 text-terminal-blue font-bold">Basic Portfolio Commands:</p>
+    <div className="pl-2 border-l-2 border-terminal-darkgray">
+      <table className="table-auto border-collapse">
+        <tbody>
+          <tr>
+            <td className="pr-4 text-terminal-blue">about</td>
+            <td className="text-terminal-gray">Learn about me</td>
+          </tr>
+          <tr>
+            <td className="pr-4 text-terminal-blue">skills</td>
+            <td className="text-terminal-gray">View my technical skills</td>
+          </tr>
+          <tr>
+            <td className="pr-4 text-terminal-blue">projects</td>
+            <td className="text-terminal-gray">See my projects</td>
+          </tr>
+          <tr>
+            <td className="pr-4 text-terminal-blue">experience</td>
+            <td className="text-terminal-gray">View my work experience</td>
+          </tr>
+          <tr>
+            <td className="pr-4 text-terminal-blue">education</td>
+            <td className="text-terminal-gray">See my educational background</td>
+          </tr>
+          <tr>
+            <td className="pr-4 text-terminal-blue">contact</td>
+            <td className="text-terminal-gray">Get my contact info</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
 
 const Terminal = () => {
   const [history, setHistory] = useState<{ command: string; response: React.ReactNode }[]>([
@@ -27,161 +94,19 @@ const Terminal = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const terminalRef = useRef<HTMLDivElement>(null);
 
-  // Commands
-  const about = (
-    <div className="mb-4">
-      <p className="mb-2 text-terminal-blue font-bold">{aboutData.name}</p>
-      <div className="pl-2 border-l-2 border-terminal-darkgray">
-        <p className="mb-1">{aboutData.location} • {aboutData.phone}</p>
-        <p className="mb-1">{aboutData.email}</p>
-        <p className="mb-1">{aboutData.website}</p>
-        <p className="mb-2">
-          <a href={aboutData.linkedin} target="_blank" rel="noopener noreferrer" className="text-terminal-blue hover:underline">LinkedIn</a> • 
-          <a href={aboutData.github} target="_blank" rel="noopener noreferrer" className="text-terminal-blue hover:underline ml-2">GitHub</a>
-        </p>
-        <p className="mt-4 text-terminal-gray">{aboutData.summary}</p>
-      </div>
-    </div>
-  );
-
-  const skills = (
-    <div className="mb-4">
-      <p className="mb-2 text-terminal-blue font-bold">Technical Skills:</p>
-      <div className="pl-2 border-l-2 border-terminal-darkgray">
-        <div className="mb-2">
-          <p className="font-medium text-terminal-green">Languages & Frameworks:</p>
-          <p className="pl-4 text-terminal-gray">{skillsData.languages.join(', ')}</p>
-        </div>
-        
-        <div className="mb-2">
-          <p className="font-medium text-terminal-green">Databases:</p>
-          <p className="pl-4 text-terminal-gray">{skillsData.databases.join(', ')}</p>
-        </div>
-        
-        <div className="mb-2">
-          <p className="font-medium text-terminal-green">Tools & Platforms:</p>
-          <p className="pl-4 text-terminal-gray">{skillsData.tools.join(', ')}</p>
-        </div>
-        
-        <div className="mb-2">
-          <p className="font-medium text-terminal-green">Other:</p>
-          <p className="pl-4 text-terminal-gray">{skillsData.other.join(', ')}</p>
-        </div>
-      </div>
-    </div>
-  );
-
-  const projects = (
-    <div className="mb-4">
-      <p className="mb-2 text-terminal-blue font-bold">Projects:</p>
-      
-      {projectsData.map((project, index) => (
-        <div key={index} className="mb-3 pl-2 border-l-2 border-terminal-darkgray">
-          <p className="font-bold text-terminal-green">{project.name}</p>
-          <p className="pl-4 italic text-xs text-terminal-gray">Technologies: {project.technologies}</p>
-          <ul className="list-disc list-inside pl-4 text-terminal-gray">
-            {project.description.map((item, i) => (
-              <li key={i} className="text-sm">{item}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  );
-
-  const experience = (
-    <div className="mb-4">
-      <p className="mb-2 text-terminal-blue font-bold">Work Experience:</p>
-      
-      {experienceData.map((job, index) => (
-        <div key={index} className="mb-3 pl-2 border-l-2 border-terminal-darkgray">
-          <div className="flex justify-between">
-            <p className="font-bold text-terminal-green">{job.title}</p>
-            <p className="text-terminal-gray text-sm">{job.period}</p>
-          </div>
-          <ul className="list-disc list-inside pl-4 text-terminal-gray">
-            {job.responsibilities.map((responsibility, i) => (
-              <li key={i} className="text-sm">{responsibility}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  );
-
-  const education = (
-    <div className="mb-4">
-      <p className="mb-2 text-terminal-blue font-bold">Education:</p>
-      
-      {educationData.map((edu, index) => (
-        <div key={index} className="mb-2 pl-2 border-l-2 border-terminal-darkgray">
-          <div className="flex justify-between">
-            <p className="font-bold text-terminal-green">{edu.degree}</p>
-            <p className="text-terminal-gray text-sm">{edu.period}</p>
-          </div>
-          <p className="text-terminal-gray">{edu.institution}</p>
-        </div>
-      ))}
-    </div>
-  );
-
-  const contact = (
-    <div className="mb-4">
-      <p className="mb-2 text-terminal-blue font-bold">Contact Information:</p>
-      <div className="pl-2 border-l-2 border-terminal-darkgray">
-        <p className="text-terminal-gray"><span className="text-terminal-green">Email:</span> {aboutData.email}</p>
-        <p className="text-terminal-gray"><span className="text-terminal-green">Phone:</span> {aboutData.phone}</p>
-        <p className="text-terminal-gray"><span className="text-terminal-green">GitHub:</span> <a href={aboutData.github} target="_blank" rel="noopener noreferrer" className="text-terminal-blue hover:underline">{aboutData.github}</a></p>
-        <p className="text-terminal-gray"><span className="text-terminal-green">LinkedIn:</span> <a href={aboutData.linkedin} target="_blank" rel="noopener noreferrer" className="text-terminal-blue hover:underline">{aboutData.linkedin}</a></p>
-        <p className="text-terminal-gray"><span className="text-terminal-green">Website:</span> <a href={aboutData.website} target="_blank" rel="noopener noreferrer" className="text-terminal-blue hover:underline">{aboutData.website}</a></p>
-      </div>
-    </div>
-  );
-
-  const help = (
-    <div className="mb-4">
-      <p className="mb-2 text-terminal-blue font-bold">Available commands:</p>
-      <div className="pl-2 border-l-2 border-terminal-darkgray">
-        <table className="table-auto border-collapse">
-          <tbody>
-            <tr>
-              <td className="pr-4 text-terminal-blue">about</td>
-              <td className="text-terminal-gray">Learn about me</td>
-            </tr>
-            <tr>
-              <td className="pr-4 text-terminal-blue">skills</td>
-              <td className="text-terminal-gray">View my technical skills</td>
-            </tr>
-            <tr>
-              <td className="pr-4 text-terminal-blue">projects</td>
-              <td className="text-terminal-gray">See my projects</td>
-            </tr>
-            <tr>
-              <td className="pr-4 text-terminal-blue">experience</td>
-              <td className="text-terminal-gray">View my work experience</td>
-            </tr>
-            <tr>
-              <td className="pr-4 text-terminal-blue">education</td>
-              <td className="text-terminal-gray">See my educational background</td>
-            </tr>
-            <tr>
-              <td className="pr-4 text-terminal-blue">contact</td>
-              <td className="text-terminal-gray">Get my contact info</td>
-            </tr>
-            <tr>
-              <td className="pr-4 text-terminal-blue">clear</td>
-              <td className="text-terminal-gray">Clear the terminal</td>
-            </tr>
-            <tr>
-              <td className="pr-4 text-terminal-blue">help</td>
-              <td className="text-terminal-gray">Show this help message</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+  // Initialize GSAP animation
+  useEffect(() => {
+    if (terminalRef.current) {
+      gsap.from(terminalRef.current, {
+        duration: 1,
+        y: -50,
+        opacity: 0,
+        ease: "power3.out"
+      });
+    }
+  }, []);
 
   // Handle command execution
   const executeCommand = (cmd: string) => {
@@ -196,7 +121,9 @@ const Terminal = () => {
     
     let response: React.ReactNode;
     
+    // Process command categories
     switch (command) {
+      // Basic commands
       case 'about':
         response = about;
         break;
@@ -215,22 +142,73 @@ const Terminal = () => {
       case 'contact':
         response = contact;
         break;
+      case 'basic':
+        response = basicHelp;
+        break;
+      
+      // Game commands  
+      case 'rps':
+        response = <RockPaperScissors />;
+        break;
+      case 'dice':
+        response = <DiceRoller />;
+        break;
+      case 'numguess':
+        response = <NumberGuesser />;
+        break;
+      case 'games':
+        response = gamesHelp;
+        break;
+      
+      // Utility commands
+      case 'uuid':
+        response = <UUIDGenerator />;
+        break;
+      case 'datetime':
+        response = <DateTimeInfo />;
+        break;
+      case 'ip':
+        response = <IPInfo />;
+        break;
+      case 'utils':
+        response = utilsHelp;
+        break;
+      
+      // Help command
       case 'help':
         response = help;
         break;
+      
+      // Empty command
       case '':
         response = null;
         break;
+      
+      // Command not found
       default:
         response = <p className="mb-4">Command not found. Type 'help' for available commands.</p>;
     }
     
-    setHistory(prev => [...prev, { command: cmd, response }]);
+    // Animate the new command response with GSAP
+    const newHistoryItem = { command: cmd, response };
+    setHistory(prev => [...prev, newHistoryItem]);
     setInput('');
     
     // Scroll to bottom after a short delay to ensure DOM is updated
     setTimeout(() => {
       scrollToBottom();
+      
+      // Animate the new command with GSAP
+      const responseElements = document.querySelectorAll('.response');
+      if (responseElements.length > 0) {
+        const lastResponse = responseElements[responseElements.length - 1];
+        gsap.from(lastResponse, {
+          duration: 0.5,
+          y: 20,
+          opacity: 0,
+          ease: "power2.out"
+        });
+      }
     }, 10);
   };
 
@@ -277,6 +255,7 @@ const Terminal = () => {
     <div 
       className="terminal-window max-w-4xl w-full mx-auto my-8 shadow-lg h-[80vh] rounded-md overflow-hidden border border-terminal-darkgray"
       onClick={focusInput}
+      ref={terminalRef}
     >
       <TerminalHeader title={`${aboutData.name.toLowerCase()}@portfolio:~$`} />
       <ScrollArea className="h-[calc(80vh-32px)]" ref={scrollAreaRef}>

@@ -131,6 +131,21 @@
   .response {
     @apply text-terminal-gray mb-4;
   }
+
+  /* GSAP Animation Classes */
+  .fade-in {
+    opacity: 0;
+  }
+
+  .slide-up {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  .scale-in {
+    transform: scale(0.95);
+    opacity: 0;
+  }
 }
 
 @layer components {
@@ -140,11 +155,23 @@
     margin: 0 auto;
     animation: typewriter 3s steps(40, end);
   }
+
+  .game-button {
+    @apply px-3 py-1 bg-terminal-darkgray text-terminal-green rounded hover:bg-opacity-70 transition;
+  }
+  
+  .terminal-button {
+    @apply px-3 py-1 bg-terminal-darkgray text-terminal-green rounded hover:bg-opacity-70 transition;
+  }
 }
 
 @layer utilities {
   .font-ubuntu {
     font-family: 'Ubuntu Mono', monospace;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 }
 
@@ -155,4 +182,30 @@
   to {
     width: 100%;
   }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* GSAP compatible animations */
+.gsap-reveal {
+  visibility: hidden;
 }
