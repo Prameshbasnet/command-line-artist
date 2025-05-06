@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { Terminal } from "../components/terminal";
+import Terminal from "../components/terminal";
 import { aboutData } from "../data/about";
 
 const Index = () => {
