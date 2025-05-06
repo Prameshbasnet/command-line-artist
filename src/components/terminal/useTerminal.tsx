@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { processCommand } from './CommandProcessor';
@@ -28,16 +29,20 @@ export const useTerminal = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  // Enhanced GSAP animation for terminal appearance
+  // Enhanced GSAP animation for terminal appearance - fixed duration to prevent premature disappearance
   useEffect(() => {
     if (terminalRef.current) {
-      const tl = gsap.timeline();
+      const tl = gsap.timeline({
+        defaults: {
+          duration: 0.8,
+          ease: "power3.out"
+        }
+      });
       
+      // Initial animation for the terminal container
       tl.from(terminalRef.current, {
-        duration: 0.8,
         y: -30,
         opacity: 0,
-        ease: "power3.out"
       });
       
       // Find elements inside the terminal for staggered animation
@@ -47,8 +52,7 @@ export const useTerminal = () => {
           opacity: 0,
           y: 15,
           stagger: 0.1,
-          duration: 0.4,
-          ease: "power2.out"
+          duration: 0.4
         }, "-=0.4");
       }
     }
