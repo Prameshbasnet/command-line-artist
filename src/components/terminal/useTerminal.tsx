@@ -32,7 +32,6 @@ export const useTerminal = () => {
   // Enhanced GSAP animation for terminal appearance
   useEffect(() => {
     if (terminalRef.current) {
-      // Create a timeline for more complex animations
       const tl = gsap.timeline();
       
       tl.from(terminalRef.current, {
