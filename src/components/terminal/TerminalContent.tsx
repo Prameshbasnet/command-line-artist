@@ -1,6 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
+import React from 'react';
 
 interface TerminalContentProps {
   history: { command: string; response: React.ReactNode }[];
@@ -21,20 +20,6 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
   inputRef,
   contentRef
 }) => {
-  const commandLineRef = useRef<HTMLFormElement>(null);
-  
-  // Animate new commands as they come in using GSAP
-  useEffect(() => {
-    if (history.length > 0 && commandLineRef.current) {
-      gsap.from(commandLineRef.current, {
-        duration: 0.3,
-        opacity: 0,
-        y: 10,
-        ease: "power2.out"
-      });
-    }
-  }, [history.length]);
-
   return (
     <div className="terminal-content p-4 font-mono" ref={contentRef}>
       {history.map((item, index) => (
@@ -49,7 +34,7 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
         </div>
       ))}
       
-      <form ref={commandLineRef} onSubmit={handleSubmit} className="terminal-prompt flex">
+      <form onSubmit={handleSubmit} className="terminal-prompt flex">
         <span className="text-terminal-blue mr-1">guest@portfolio:{currentPath}$</span>
         <div className="relative flex-1">
           <input
