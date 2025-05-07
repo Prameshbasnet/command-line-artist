@@ -1,9 +1,9 @@
+
 import React from 'react';
 import { about, skills, projects, experience, education, contact } from '../../commands/baseCommands';
 import { RockPaperScissors, DiceRoller, NumberGuesser, gamesHelp } from '../../commands/gameCommands';
 import { UUIDGenerator, DateTimeInfo, IPInfo, utilsHelp } from '../../commands/utilCommands';
-import { UIShowcase, showcaseHelp } from '../../commands/uiShowcaseCommands';
-import { Terminal as TerminalIcon, Code, Gamepad, Square, Boxes, Sparkles } from 'lucide-react';
+import { Terminal as TerminalIcon, Code, Gamepad, Square } from 'lucide-react';
 
 // Help menu
 export const help = (
@@ -25,16 +25,12 @@ export const help = (
             <td className="text-terminal-gray">Utility commands (uuid, datetime, etc.)</td>
           </tr>
           <tr>
-            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Sparkles className="w-4 h-4" /> showcase</td>
-            <td className="text-terminal-gray">Interactive UI component showcase</td>
-          </tr>
-          <tr>
             <td className="pr-4 text-terminal-blue flex items-center gap-1"><Square className="w-4 h-4" /> clear</td>
             <td className="text-terminal-gray">Clear the terminal</td>
           </tr>
         </tbody>
       </table>
-      <p className="mt-2 text-terminal-gray">Type 'basic', 'games', 'utils', or 'showcase' to see specific commands in each category</p>
+      <p className="mt-2 text-terminal-gray">Type 'basic', 'games', or 'utils' to see specific commands in each category</p>
     </div>
   </div>
 );
@@ -113,12 +109,6 @@ export const processCommand = (command: string): React.ReactNode => {
       return <IPInfo />;
     case 'utils':
       return utilsHelp;
-    
-    // UI Showcase commands
-    case 'showcase':
-      return <UIShowcase />;
-    case 'ui':
-      return showcaseHelp;
     
     // Help command
     case 'help':

@@ -16,7 +16,6 @@ export const useTerminal = () => {
         <div className="mb-4">
           <p className="text-terminal-green">Welcome to <span className="text-terminal-blue font-bold">{aboutData.name.toLowerCase()}'s</span> terminal portfolio!</p>
           <p className="mt-1">Type <span className="text-terminal-blue font-semibold">help</span> to see available commands.</p>
-          <p className="mt-1">Try the new <span className="text-terminal-blue font-semibold">showcase</span> command for interactive UI components.</p>
           <p className="mt-1 text-terminal-gray text-xs">Last login: {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</p>
         </div>
       ) 
@@ -27,7 +26,6 @@ export const useTerminal = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const terminalRef = useRef<HTMLDivElement>(null);
 
   // Handle command execution
   const executeCommand = (cmd: string) => {
@@ -54,20 +52,10 @@ export const useTerminal = () => {
     }, 10);
   };
 
-  // Scroll to bottom of terminal - simplified
+  // Scroll to bottom of terminal
   const scrollToBottom = () => {
-    try {
-      if (scrollAreaRef.current) {
-        const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        if (scrollContainer) {
-          scrollContainer.scrollTop = scrollContainer.scrollHeight;
-        }
-      }
-      if (contentRef.current) {
-        contentRef.current.scrollTop = contentRef.current.scrollHeight;
-      }
-    } catch (error) {
-      console.error("Scroll error:", error);
+    if (contentRef.current) {
+      contentRef.current.scrollTop = contentRef.current.scrollHeight;
     }
   };
 
@@ -109,6 +97,5 @@ export const useTerminal = () => {
     inputRef,
     contentRef,
     scrollAreaRef,
-    terminalRef,
   };
 };

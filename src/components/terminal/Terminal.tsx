@@ -17,14 +17,12 @@ const Terminal = () => {
     inputRef,
     contentRef,
     scrollAreaRef,
-    terminalRef,
   } = useTerminal();
 
   return (
     <div 
-      className="terminal-window max-w-4xl w-full mx-auto my-8 shadow-lg h-[80vh] rounded-md overflow-hidden border border-terminal-darkgray"
+      className="terminal-window max-w-4xl w-full mx-auto shadow-lg h-[80vh] rounded-md overflow-hidden border border-terminal-darkgray"
       onClick={focusInput}
-      ref={terminalRef}
     >
       <TerminalHeader title={`${aboutData.name.toLowerCase()}@portfolio:~$`} />
       <ScrollArea className="h-[calc(80vh-32px)]" ref={scrollAreaRef}>
