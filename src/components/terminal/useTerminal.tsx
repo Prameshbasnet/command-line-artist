@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { processCommand } from './CommandProcessor';
@@ -29,36 +30,57 @@ export const useTerminal = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  // Enhanced GSAP animation with proper duration and persistence
+  // Fix GSAP animation with proper error handling and safeguards
   useEffect(() => {
-    if (terminalRef.current) {
-      const tl = gsap.timeline({
-        defaults: {
-          duration: 0.8,
-          ease: "power3.out"
+    try {
+      if (terminalRef.current) {
+        // Create a safer animation timeline with explicit defaults
+        const tl = gsap.timeline({
+          defaults: {
+            duration: 0.7,
+            ease: "power3.out",
+            overwrite: true
+          }
+        });
+        
+        // Initial animation for terminal container - with fixed values and error handling
+        tl.fromTo(terminalRef.current, 
+          { y: -20, opacity: 0 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            duration: 0.8,
+            onComplete: () => {
+              // Force terminal to stay visible after animation
+              if (terminalRef.current) {
+                gsap.set(terminalRef.current, { opacity: 1, y: 0, clearProps: "transform" });
+              }
+            }
+          }
+        );
+        
+        // Find all elements inside the terminal for staggered animation with null check
+        const elements = terminalRef.current.querySelectorAll('.typewriter *');
+        if (elements && elements.length > 0) {
+          tl.fromTo(
+            elements, 
+            { opacity: 0, y: 10 },
+            { 
+              opacity: 1, 
+              y: 0, 
+              stagger: 0.1, 
+              duration: 0.4,
+              clearProps: "all"
+            }, 
+            "-=0.3"
+          );
         }
-      });
-      
-      // Initial animation for the terminal container - with fixed values
-      tl.from(terminalRef.current, {
-        y: -30,
-        opacity: 0,
-        duration: 0.8, // Explicit duration
-        onComplete: () => {
-          // Force terminal to stay visible after animation
-          gsap.set(terminalRef.current, { opacity: 1, y: 0 });
-        }
-      });
-      
-      // Find elements inside the terminal for staggered animation
-      const elements = terminalRef.current.querySelectorAll('.typewriter *');
-      if (elements.length) {
-        tl.from(elements, {
-          opacity: 0,
-          y: 15,
-          stagger: 0.1,
-          duration: 0.4
-        }, "-=0.4");
+      }
+    } catch (error) {
+      console.error("Animation error:", error);
+      // Ensure terminal is visible even if animation fails
+      if (terminalRef.current) {
+        terminalRef.current.style.opacity = "1";
       }
     }
   }, []);
@@ -86,30 +108,43 @@ export const useTerminal = () => {
     setTimeout(() => {
       scrollToBottom();
       
-      // Animate the new command with GSAP
-      const responseElements = document.querySelectorAll('.response');
-      if (responseElements.length > 0) {
-        const lastResponse = responseElements[responseElements.length - 1];
-        gsap.from(lastResponse, {
-          duration: 0.4,
-          y: 15,
-          opacity: 0,
-          ease: "power2.out"
-        });
+      // Safely animate the new command with GSAP
+      try {
+        const responseElements = document.querySelectorAll('.response');
+        if (responseElements.length > 0) {
+          const lastResponse = responseElements[responseElements.length - 1];
+          gsap.fromTo(
+            lastResponse,
+            { opacity: 0, y: 10 },
+            { 
+              opacity: 1, 
+              y: 0, 
+              duration: 0.4, 
+              ease: "power2.out",
+              clearProps: "all"
+            }
+          );
+        }
+      } catch (error) {
+        console.error("Response animation error:", error);
       }
     }, 10);
   };
 
-  // Scroll to bottom of terminal
+  // Scroll to bottom of terminal - with additional error handling
   const scrollToBottom = () => {
-    if (scrollAreaRef.current) {
-      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-      if (scrollContainer) {
-        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    try {
+      if (scrollAreaRef.current) {
+        const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+        if (scrollContainer) {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }
       }
-    }
-    if (contentRef.current) {
-      contentRef.current.scrollTop = contentRef.current.scrollHeight;
+      if (contentRef.current) {
+        contentRef.current.scrollTop = contentRef.current.scrollHeight;
+      }
+    } catch (error) {
+      console.error("Scroll error:", error);
     }
   };
 
