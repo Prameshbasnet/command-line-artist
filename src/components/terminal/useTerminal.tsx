@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { processCommand } from './CommandProcessor';
@@ -17,6 +16,7 @@ export const useTerminal = () => {
         <div className="mb-4 typewriter">
           <p className="text-terminal-green">Welcome to <span className="text-terminal-blue font-bold">{aboutData.name.toLowerCase()}'s</span> terminal portfolio!</p>
           <p className="mt-1">Type <span className="text-terminal-blue font-semibold">help</span> to see available commands.</p>
+          <p className="mt-1">Try the new <span className="text-terminal-blue font-semibold">showcase</span> command for interactive UI components.</p>
           <p className="mt-1 text-terminal-gray text-xs">Last login: {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</p>
         </div>
       ) 
@@ -29,7 +29,7 @@ export const useTerminal = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  // Enhanced GSAP animation for terminal appearance - fixed duration to prevent premature disappearance
+  // Enhanced GSAP animation with proper duration and persistence
   useEffect(() => {
     if (terminalRef.current) {
       const tl = gsap.timeline({
@@ -39,10 +39,15 @@ export const useTerminal = () => {
         }
       });
       
-      // Initial animation for the terminal container
+      // Initial animation for the terminal container - with fixed values
       tl.from(terminalRef.current, {
         y: -30,
         opacity: 0,
+        duration: 0.8, // Explicit duration
+        onComplete: () => {
+          // Force terminal to stay visible after animation
+          gsap.set(terminalRef.current, { opacity: 1, y: 0 });
+        }
       });
       
       // Find elements inside the terminal for staggered animation
