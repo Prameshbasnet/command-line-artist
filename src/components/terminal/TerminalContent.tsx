@@ -26,7 +26,7 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
         <div key={index} className="mb-4 command-response-pair">
           {item.command && (
             <div className="terminal-prompt mb-1 flex items-center">
-              <span className="text-terminal-blue mr-1 font-bold">guest@portfolio:{currentPath}$</span>
+              <span className="text-terminal-purple mr-1 font-bold">portfolio:<span className="text-terminal-blue">{currentPath}</span>$</span>
               <span className="command text-terminal-green font-semibold">{item.command}</span>
             </div>
           )}
@@ -35,7 +35,7 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
       ))}
       
       <form onSubmit={handleSubmit} className="terminal-prompt flex items-center">
-        <span className="text-terminal-blue mr-1 font-bold">guest@portfolio:{currentPath}$</span>
+        <span className="text-terminal-purple mr-1 font-bold">portfolio:<span className="text-terminal-blue">{currentPath}</span>$</span>
         <div className="relative flex-1">
           <input
             type="text"

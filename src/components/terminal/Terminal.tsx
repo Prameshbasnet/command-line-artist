@@ -24,7 +24,7 @@ const Terminal = () => {
       className="terminal-window max-w-4xl w-full mx-auto shadow-2xl h-[80vh] rounded-lg overflow-hidden border border-terminal-darkgray bg-gradient-to-b from-terminal-black to-[#0F0F16]"
       onClick={focusInput}
     >
-      <TerminalHeader title={`${aboutData.name.toLowerCase()}@portfolio:~$`} />
+      <TerminalHeader title={`portfolio:~$`} />
       <ScrollArea 
         className="h-[calc(80vh-32px)]" 
         ref={scrollAreaRef}

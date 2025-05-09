@@ -10,7 +10,7 @@ const TerminalHeader: React.FC<TerminalHeaderProps> = ({ title }) => {
   return (
     <div className="terminal-header bg-terminal-darkgray p-2 flex items-center justify-between rounded-t-md">
       <div className="flex items-center">
-        <TerminalIcon className="w-4 h-4 text-terminal-green mr-2" />
+        <TerminalIcon className="w-4 h-4 text-terminal-purple mr-2" />
         <span className="text-terminal-gray text-sm">{title}</span>
       </div>
       <div className="flex space-x-2">

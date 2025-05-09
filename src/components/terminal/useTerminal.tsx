@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { processCommand } from './CommandProcessor';
 import { aboutData } from '../../data/about';
@@ -14,7 +13,7 @@ export const useTerminal = () => {
       command: '', 
       response: (
         <div className="mb-4">
-          <p className="text-terminal-green">Welcome to <span className="text-terminal-blue font-bold">{aboutData.name.toLowerCase()}'s</span> terminal portfolio!</p>
+          <p className="text-terminal-green">Welcome to <span className="text-terminal-purple font-bold">{aboutData.name.toLowerCase()}'s</span> terminal portfolio!</p>
           <p className="mt-1">Type <span className="text-terminal-blue font-semibold">help</span> to see available commands.</p>
           <p className="mt-1 text-terminal-gray text-xs">Last login: {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</p>
         </div>
