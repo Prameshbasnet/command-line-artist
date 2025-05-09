@@ -45,17 +45,17 @@ export const useTerminal = () => {
     const newHistoryItem = { command: cmd, response };
     setHistory(prev => [...prev, newHistoryItem]);
     setInput('');
-    
-    // Scroll to bottom after a short delay to ensure DOM is updated
-    setTimeout(() => {
-      scrollToBottom();
-    }, 10);
   };
 
   // Scroll to bottom of terminal
   const scrollToBottom = () => {
-    if (contentRef.current) {
-      contentRef.current.scrollTop = contentRef.current.scrollHeight;
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        setTimeout(() => {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }, 10);
+      }
     }
   };
 
@@ -74,12 +74,11 @@ export const useTerminal = () => {
     }
   };
 
-  // Auto-focus input on mount and scroll to bottom
+  // Auto-focus input on mount
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-    scrollToBottom();
   }, []);
 
   // Scroll to bottom whenever history changes

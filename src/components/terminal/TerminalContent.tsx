@@ -21,21 +21,21 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
   contentRef
 }) => {
   return (
-    <div className="terminal-content p-4 font-mono" ref={contentRef}>
+    <div className="terminal-content px-4 py-2 font-mono text-sm leading-relaxed" ref={contentRef}>
       {history.map((item, index) => (
-        <div key={index} className="mb-3">
+        <div key={index} className="mb-3 command-response-pair">
           {item.command && (
-            <div className="terminal-prompt mb-1 flex">
-              <span className="text-terminal-blue mr-1">guest@portfolio:{currentPath}$</span>
+            <div className="terminal-prompt mb-1 flex items-center">
+              <span className="text-terminal-blue mr-1 font-bold">guest@portfolio:{currentPath}$</span>
               <span className="command text-terminal-green">{item.command}</span>
             </div>
           )}
-          <div className="response pl-0">{item.response}</div>
+          <div className="response pl-0 text-terminal-gray">{item.response}</div>
         </div>
       ))}
       
-      <form onSubmit={handleSubmit} className="terminal-prompt flex">
-        <span className="text-terminal-blue mr-1">guest@portfolio:{currentPath}$</span>
+      <form onSubmit={handleSubmit} className="terminal-prompt flex items-center">
+        <span className="text-terminal-blue mr-1 font-bold">guest@portfolio:{currentPath}$</span>
         <div className="relative flex-1">
           <input
             type="text"
@@ -46,8 +46,9 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
             autoComplete="off"
             autoFocus
             aria-label="Terminal command input"
+            spellCheck="false"
           />
-          <span className="cursor absolute right-0 top-0 w-2 h-5 bg-terminal-green inline-block animate-blink"></span>
+          <span className="cursor absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-terminal-green inline-block animate-blink"></span>
         </div>
       </form>
     </div>
