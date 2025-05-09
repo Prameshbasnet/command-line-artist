@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
 
@@ -104,11 +105,13 @@
 
   .terminal-window {
     @apply bg-terminal-black border border-terminal-darkgray rounded-md overflow-hidden shadow-lg;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
   }
 
   .terminal-header {
     @apply bg-terminal-darkgray p-2 flex items-center;
+    background: linear-gradient(to bottom, #3a3a3a, #2a2a2a);
   }
 
   .terminal-content {

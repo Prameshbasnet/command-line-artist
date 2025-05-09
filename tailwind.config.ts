@@ -65,8 +65,8 @@ export default {
 				},
 				terminal: {
 					black: '#0D0D12',
-					green: '#4AF626',
-					blue: '#00C2BA',
+					green: '#4EF5A7',
+					blue: '#00C2FF',
 					gray: '#CCCCCC',
 					darkgray: '#2B2B2B'
 				}

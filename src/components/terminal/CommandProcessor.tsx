@@ -2,7 +2,7 @@
 import React from 'react';
 import { about, skills, projects, experience, education, contact } from '../../commands/baseCommands';
 import { RockPaperScissors, DiceRoller, NumberGuesser, gamesHelp } from '../../commands/gameCommands';
-import { UUIDGenerator, DateTimeInfo, IPInfo, utilsHelp } from '../../commands/utilCommands';
+import { UUIDGenerator, DateTimeInfo, PasswordGenerator, utilsHelp } from '../../commands/utilCommands';
 import { Terminal as TerminalIcon, Circle, Square } from 'lucide-react';
 
 // Help menu
@@ -22,7 +22,7 @@ export const help = (
           </tr>
           <tr>
             <td className="pr-4 text-terminal-blue flex items-center gap-1"><Circle className="w-4 h-4" /> utils</td>
-            <td className="text-terminal-gray">Utility commands (uuid, datetime, etc.)</td>
+            <td className="text-terminal-gray">Utility commands (uuid, password, datetime, etc.)</td>
           </tr>
           <tr>
             <td className="pr-4 text-terminal-blue flex items-center gap-1"><Square className="w-4 h-4" /> clear</td>
@@ -105,8 +105,8 @@ export const processCommand = (command: string): React.ReactNode => {
       return <UUIDGenerator />;
     case 'datetime':
       return <DateTimeInfo />;
-    case 'ip':
-      return <IPInfo />;
+    case 'password':
+      return <PasswordGenerator />;
     case 'utils':
       return utilsHelp;
     
