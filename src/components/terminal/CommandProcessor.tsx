@@ -3,7 +3,7 @@ import React from 'react';
 import { about, skills, projects, experience, education, contact } from '../../commands/baseCommands';
 import { RockPaperScissors, DiceRoller, NumberGuesser, gamesHelp } from '../../commands/gameCommands';
 import { UUIDGenerator, DateTimeInfo, IPInfo, utilsHelp } from '../../commands/utilCommands';
-import { Terminal as TerminalIcon, Code, Gamepad, Square } from 'lucide-react';
+import { Terminal as TerminalIcon, Circle, Square } from 'lucide-react';
 
 // Help menu
 export const help = (
@@ -17,11 +17,11 @@ export const help = (
             <td className="text-terminal-gray">Basic portfolio commands (about, skills, projects, etc.)</td>
           </tr>
           <tr>
-            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Gamepad className="w-4 h-4" /> games</td>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Circle className="w-4 h-4" /> games</td>
             <td className="text-terminal-gray">Fun games to play in the terminal</td>
           </tr>
           <tr>
-            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Code className="w-4 h-4" /> utils</td>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Circle className="w-4 h-4" /> utils</td>
             <td className="text-terminal-gray">Utility commands (uuid, datetime, etc.)</td>
           </tr>
           <tr>
