@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { about, skills, projects, experience, education, contact } from '../../commands/baseCommands';
 import { UUIDGenerator, DateTimeInfo, PasswordGenerator, utilsHelp } from '../../commands/utilCommands';
 import { Terminal as TerminalIcon, Square } from 'lucide-react';
+import { ReactBitsShowcase, reactBitsHelp } from '../../commands/reactBitsCommands';
 
 // Help menu
 export const help = (
@@ -19,12 +21,16 @@ export const help = (
             <td className="text-terminal-gray">Utility commands (uuid, password, datetime, etc.)</td>
           </tr>
           <tr>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Square className="w-4 h-4" /> reactbits</td>
+            <td className="text-terminal-gray">Interactive React UI components showcase</td>
+          </tr>
+          <tr>
             <td className="pr-4 text-terminal-blue flex items-center gap-1"><Square className="w-4 h-4" /> clear</td>
             <td className="text-terminal-gray">Clear the terminal</td>
           </tr>
         </tbody>
       </table>
-      <p className="mt-2 text-terminal-gray">Type 'basic' or 'utils' to see specific commands in each category</p>
+      <p className="mt-2 text-terminal-gray">Type 'basic', 'utils', or 'reactbits' to see specific commands in each category</p>
     </div>
   </div>
 );
@@ -93,6 +99,12 @@ export const processCommand = (command: string): React.ReactNode => {
       return <PasswordGenerator />;
     case 'utils':
       return utilsHelp;
+    
+    // ReactBits showcase
+    case 'reactbits':
+      return <ReactBitsShowcase />;
+    case 'reactbits help':
+      return reactBitsHelp;
     
     // Help command
     case 'help':

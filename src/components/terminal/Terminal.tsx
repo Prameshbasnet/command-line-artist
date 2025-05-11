@@ -17,6 +17,7 @@ const Terminal = () => {
     inputRef,
     contentRef,
     scrollAreaRef,
+    handleKeyDown,
   } = useTerminal();
 
   return (
@@ -37,6 +38,7 @@ const Terminal = () => {
           handleSubmit={handleSubmit}
           inputRef={inputRef}
           contentRef={contentRef}
+          handleKeyDown={handleKeyDown}
         />
       </ScrollArea>
     </div>

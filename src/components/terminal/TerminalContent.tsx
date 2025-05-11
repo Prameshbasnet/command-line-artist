@@ -9,6 +9,7 @@ interface TerminalContentProps {
   handleSubmit: (e: React.FormEvent) => void;
   inputRef: React.RefObject<HTMLInputElement>;
   contentRef: React.RefObject<HTMLDivElement>;
+  handleKeyDown?: (e: React.KeyboardEvent) => void;
 }
 
 const TerminalContent: React.FC<TerminalContentProps> = ({
@@ -18,7 +19,8 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
   setInput,
   handleSubmit,
   inputRef,
-  contentRef
+  contentRef,
+  handleKeyDown
 }) => {
   return (
     <div className="terminal-content px-4 py-4 font-mono text-sm leading-relaxed" ref={contentRef}>
@@ -41,6 +43,7 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="command flex-1 bg-transparent border-none outline-none text-terminal-green font-semibold w-full pr-2"
             ref={inputRef}
             autoComplete="off"
