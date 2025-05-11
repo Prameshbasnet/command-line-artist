@@ -22,12 +22,12 @@ const Terminal = () => {
 
   return (
     <div 
-      className="terminal-window max-w-4xl w-full mx-auto shadow-2xl h-[80vh] rounded-lg overflow-hidden border border-terminal-darkgray bg-gradient-to-b from-terminal-black to-[#0F0F16]"
+      className="terminal-window w-full max-w-4xl mx-auto shadow-2xl rounded-lg overflow-hidden border border-terminal-darkgray bg-gradient-to-b from-terminal-black to-[#0F0F16] transition-all hover:shadow-[0_0_15px_rgba(78,245,167,0.25)]"
       onClick={focusInput}
     >
-      <TerminalHeader title={`portfolio:~$`} />
+      <TerminalHeader title={`${aboutData.name.toLowerCase()}@portfolio:~$`} />
       <ScrollArea 
-        className="h-[calc(80vh-32px)]" 
+        className="h-[calc(70vh)]" 
         ref={scrollAreaRef}
       >
         <TerminalContent 

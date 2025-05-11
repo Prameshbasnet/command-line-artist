@@ -23,11 +23,11 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
   handleKeyDown
 }) => {
   return (
-    <div className="terminal-content px-4 py-4 font-mono text-sm leading-relaxed" ref={contentRef}>
+    <div className="terminal-content px-5 py-4 font-mono text-sm leading-relaxed" ref={contentRef}>
       {history.map((item, index) => (
-        <div key={index} className="mb-4 command-response-pair">
+        <div key={index} className="mb-5 command-response-pair">
           {item.command && (
-            <div className="terminal-prompt mb-1 flex items-center">
+            <div className="terminal-prompt mb-2 flex items-center">
               <span className="text-terminal-purple mr-1 font-bold">portfolio:<span className="text-terminal-blue">{currentPath}</span>$</span>
               <span className="command text-terminal-green font-semibold">{item.command}</span>
             </div>
