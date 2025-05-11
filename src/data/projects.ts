@@ -10,14 +10,6 @@ export const projectsData = [
     ]
   },
   {
-    name: "Prabhu Budget Management System (PBM)",
-    technologies: ".NET, React, PostgreSQL",
-    description: [
-      "Developed robust backend systems for budget tracking and financial management.",
-      "Designed an intuitive React dashboard for budget visualization and administration."
-    ]
-  },
-  {
     name: "Kiosk Application",
     technologies: "Flutter, React",
     description: [
