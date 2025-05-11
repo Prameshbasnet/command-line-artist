@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { about, skills, projects, experience, education, contact } from '../../commands/baseCommands';
-import { RockPaperScissors, DiceRoller, NumberGuesser, gamesHelp } from '../../commands/gameCommands';
 import { UUIDGenerator, DateTimeInfo, PasswordGenerator, utilsHelp } from '../../commands/utilCommands';
-import { Terminal as TerminalIcon, Circle, Square } from 'lucide-react';
+import { Terminal as TerminalIcon, Square } from 'lucide-react';
 
 // Help menu
 export const help = (
@@ -17,11 +15,7 @@ export const help = (
             <td className="text-terminal-gray">Basic portfolio commands (about, skills, projects, etc.)</td>
           </tr>
           <tr>
-            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Circle className="w-4 h-4" /> games</td>
-            <td className="text-terminal-gray">Fun games to play in the terminal</td>
-          </tr>
-          <tr>
-            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Circle className="w-4 h-4" /> utils</td>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Square className="w-4 h-4" /> utils</td>
             <td className="text-terminal-gray">Utility commands (uuid, password, datetime, etc.)</td>
           </tr>
           <tr>
@@ -30,7 +24,7 @@ export const help = (
           </tr>
         </tbody>
       </table>
-      <p className="mt-2 text-terminal-gray">Type 'basic', 'games', or 'utils' to see specific commands in each category</p>
+      <p className="mt-2 text-terminal-gray">Type 'basic' or 'utils' to see specific commands in each category</p>
     </div>
   </div>
 );
@@ -89,16 +83,6 @@ export const processCommand = (command: string): React.ReactNode => {
       return contact;
     case 'basic':
       return basicHelp;
-    
-    // Game commands  
-    case 'rps':
-      return <RockPaperScissors />;
-    case 'dice':
-      return <DiceRoller />;
-    case 'numguess':
-      return <NumberGuesser />;
-    case 'games':
-      return gamesHelp;
     
     // Utility commands
     case 'uuid':
