@@ -37,7 +37,7 @@ export const Base64Tool = () => {
         <div className="mb-2">
           <label className="text-terminal-gray block mb-1">Input:</label>
           <div className="flex flex-col sm:flex-row gap-2">
-            <Textarea
+            <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24 resize-none"
@@ -65,7 +65,7 @@ export const Base64Tool = () => {
           <div className="mb-2">
             <label className="text-terminal-gray block mb-1">Output:</label>
             <div className="relative">
-              <Textarea
+              <textarea
                 readOnly
                 value={output}
                 className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24 resize-none"

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { formatJSON } from '../../utils/textUtils';
 import { Copy, Check } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
 
 export const JSONFormatter = () => {
   const [input, setInput] = useState<string>('');
@@ -28,7 +27,7 @@ export const JSONFormatter = () => {
       <div className="pl-2 border-l-2 border-terminal-darkgray">
         <div className="mb-2">
           <label className="text-terminal-gray block mb-1">Input JSON:</label>
-          <Textarea
+          <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24 resize-none"
@@ -52,7 +51,7 @@ export const JSONFormatter = () => {
               </span>
             </div>
             <div className="relative">
-              <Textarea
+              <textarea
                 readOnly
                 value={output}
                 className={`bg-terminal-black bg-opacity-50 border ${isValid ? "border-terminal-darkgray" : "border-red-500"} rounded-md p-2 text-terminal-green font-mono w-full h-36 resize-none`}
