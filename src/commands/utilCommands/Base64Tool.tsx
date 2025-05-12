@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { base64Encode, base64Decode } from '../../utils/textUtils';
 import { Copy, ArrowRightLeft } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 
 export const Base64Tool = () => {
   const [input, setInput] = useState<string>('');
@@ -36,10 +37,10 @@ export const Base64Tool = () => {
         <div className="mb-2">
           <label className="text-terminal-gray block mb-1">Input:</label>
           <div className="flex flex-col sm:flex-row gap-2">
-            <textarea
+            <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24"
+              className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24 resize-none"
               placeholder={`Enter text to ${mode}...`}
             />
             <button
@@ -64,10 +65,10 @@ export const Base64Tool = () => {
           <div className="mb-2">
             <label className="text-terminal-gray block mb-1">Output:</label>
             <div className="relative">
-              <textarea
+              <Textarea
                 readOnly
                 value={output}
-                className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24"
+                className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24 resize-none"
               />
               <button
                 onClick={copyToClipboard}

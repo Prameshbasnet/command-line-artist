@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { findDifferences } from '../../utils/textUtils';
 import { Copy } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 
 export const DiffChecker = () => {
   const [text1, setText1] = useState<string>('');
@@ -27,19 +28,19 @@ export const DiffChecker = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
           <div>
             <label className="text-terminal-gray block mb-1">Text 1:</label>
-            <textarea
+            <Textarea
               value={text1}
               onChange={(e) => setText1(e.target.value)}
-              className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24"
+              className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24 resize-none"
               placeholder="First text block..."
             />
           </div>
           <div>
             <label className="text-terminal-gray block mb-1">Text 2:</label>
-            <textarea
+            <Textarea
               value={text2}
               onChange={(e) => setText2(e.target.value)}
-              className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24"
+              className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24 resize-none"
               placeholder="Second text block..."
             />
           </div>
