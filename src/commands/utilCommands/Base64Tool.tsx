@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { base64Encode, base64Decode } from '../../utils/textUtils';
 import { Copy, ArrowRightLeft } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
 
 export const Base64Tool = () => {
   const [input, setInput] = useState<string>('');
