@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { base64Encode, base64Decode } from '../../utils/textUtils';
-import { Copy, ArrowRightLeft } from 'lucide-react';
+import { Copy, ArrowRightLeft, Check } from 'lucide-react';
 
 export const Base64Tool = () => {
   const [input, setInput] = useState<string>('');
@@ -74,7 +74,7 @@ export const Base64Tool = () => {
                 className="absolute top-2 right-2 px-2 py-1 bg-terminal-darkgray text-terminal-green rounded-md hover:bg-opacity-70 transition flex items-center gap-1"
                 title="Copy to clipboard"
               >
-                <Copy size={14} />
+                {copied ? <Check size={14} /> : <Copy size={14} />}
                 {copied ? 'Copied!' : 'Copy'}
               </button>
             </div>

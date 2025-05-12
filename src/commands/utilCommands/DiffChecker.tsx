@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { findDifferences } from '../../utils/textUtils';
-import { Copy } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 
 export const DiffChecker = () => {
   const [text1, setText1] = useState<string>('');
@@ -61,7 +61,7 @@ export const DiffChecker = () => {
                 className="px-2 py-1 bg-terminal-darkgray text-terminal-green rounded-md hover:bg-opacity-70 transition flex items-center gap-1"
                 title="Copy to clipboard"
               >
-                <Copy size={14} />
+                {copied ? <Check size={14} /> : <Copy size={14} />}
                 {copied ? 'Copied!' : 'Copy'}
               </button>
             </div>
