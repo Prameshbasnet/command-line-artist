@@ -4,6 +4,7 @@ import TerminalHeader from './TerminalHeader';
 import TerminalContent from './TerminalContent';
 import { ScrollArea } from '../ui/scroll-area';
 import { useTerminal } from './useTerminal';
+import { useIsMobile } from '../../hooks/use-mobile';
 import { aboutData } from '../../data/about';
 
 const Terminal = () => {
@@ -19,6 +20,8 @@ const Terminal = () => {
     scrollAreaRef,
     handleKeyDown,
   } = useTerminal();
+  
+  const isMobile = useIsMobile();
 
   return (
     <div 
@@ -27,7 +30,7 @@ const Terminal = () => {
     >
       <TerminalHeader title={`${aboutData.name.toLowerCase()}@portfolio:~$`} />
       <ScrollArea 
-        className="h-[calc(70vh)]" 
+        className={`${isMobile ? 'h-[60vh]' : 'h-[70vh]'}`}
         ref={scrollAreaRef}
       >
         <TerminalContent 

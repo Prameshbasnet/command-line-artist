@@ -1,8 +1,17 @@
 
 import React from 'react';
 import { about, skills, projects, experience, education, contact } from '../../commands/baseCommands';
-import { UUIDGenerator, DateTimeInfo, PasswordGenerator, utilsHelp } from '../../commands/utilCommands';
-import { Terminal as TerminalIcon, Square } from 'lucide-react';
+import { utilsHelp } from '../../commands/utilCommands';
+import { 
+  UUIDGenerator, 
+  DateTimeInfo, 
+  PasswordGenerator,
+  Base64Tool,
+  JSONFormatter,
+  DiffChecker,
+  LoremIpsumGenerator
+} from '../../commands/utilCommands';
+import { Terminal as TerminalIcon, Wrench, X } from 'lucide-react';
 
 // Help menu
 export const help = (
@@ -12,15 +21,21 @@ export const help = (
       <table className="table-auto border-collapse">
         <tbody>
           <tr>
-            <td className="pr-4 text-terminal-blue flex items-center gap-1"><TerminalIcon className="w-4 h-4" /> basic</td>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1">
+              <TerminalIcon className="w-4 h-4" /> basic
+            </td>
             <td className="text-terminal-gray">Basic portfolio commands (about, skills, projects, etc.)</td>
           </tr>
           <tr>
-            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Square className="w-4 h-4" /> utils</td>
-            <td className="text-terminal-gray">Utility commands (uuid, password, datetime, etc.)</td>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1">
+              <Wrench className="w-4 h-4" /> utils
+            </td>
+            <td className="text-terminal-gray">Utility commands (uuid, base64, json, diff, etc.)</td>
           </tr>
           <tr>
-            <td className="pr-4 text-terminal-blue flex items-center gap-1"><Square className="w-4 h-4" /> clear</td>
+            <td className="pr-4 text-terminal-blue flex items-center gap-1">
+              <X className="w-4 h-4" /> clear
+            </td>
             <td className="text-terminal-gray">Clear the terminal</td>
           </tr>
         </tbody>
@@ -88,10 +103,18 @@ export const processCommand = (command: string): React.ReactNode => {
     // Utility commands
     case 'uuid':
       return <UUIDGenerator />;
+    case 'base64':
+      return <Base64Tool />;
+    case 'json':
+      return <JSONFormatter />;
+    case 'diff':
+      return <DiffChecker />;
     case 'datetime':
       return <DateTimeInfo />;
     case 'password':
       return <PasswordGenerator />;
+    case 'lorem':
+      return <LoremIpsumGenerator />;
     case 'utils':
       return utilsHelp;
     

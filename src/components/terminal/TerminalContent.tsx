@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useIsMobile } from '../../hooks/use-mobile';
 
 interface TerminalContentProps {
   history: { command: string; response: React.ReactNode }[];
@@ -22,12 +23,14 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
   contentRef,
   handleKeyDown
 }) => {
+  const isMobile = useIsMobile();
+  
   return (
-    <div className="terminal-content px-5 py-4 font-mono text-sm leading-relaxed" ref={contentRef}>
+    <div className="terminal-content px-2 sm:px-5 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed" ref={contentRef}>
       {history.map((item, index) => (
-        <div key={index} className="mb-5 command-response-pair">
+        <div key={index} className="mb-4 sm:mb-5 command-response-pair">
           {item.command && (
-            <div className="terminal-prompt mb-2 flex items-center">
+            <div className="terminal-prompt mb-1 sm:mb-2 flex items-center flex-wrap">
               <span className="text-terminal-purple mr-1 font-bold">portfolio:<span className="text-terminal-blue">{currentPath}</span>$</span>
               <span className="command text-terminal-green font-semibold">{item.command}</span>
             </div>
@@ -36,7 +39,7 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
         </div>
       ))}
       
-      <form onSubmit={handleSubmit} className="terminal-prompt flex items-center">
+      <form onSubmit={handleSubmit} className="terminal-prompt flex items-center flex-wrap">
         <span className="text-terminal-purple mr-1 font-bold">portfolio:<span className="text-terminal-blue">{currentPath}</span>$</span>
         <div className="relative flex-1">
           <input
