@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Terminal as TerminalIcon, Wrench, X } from 'lucide-react';
 import { about, skills, projects, experience, education, contact } from '../../commands/baseCommands';
 import { utilsHelp } from '../../commands/utilCommands';
 import { 
@@ -10,8 +11,7 @@ import {
   JSONFormatter,
   DiffChecker,
   LoremIpsumGenerator
-} from '../../commands/utilCommands';
-import { Terminal as TerminalIcon, Wrench, X } from 'lucide-react';
+} from '../../commands/utilCommands/index';
 
 // Help menu
 export const help = (

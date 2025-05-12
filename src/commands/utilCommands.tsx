@@ -1,15 +1,6 @@
 
 import React from 'react';
 import { Code, Cpu, FlipHorizontal, TerminalSquare, Text, FileJson, Diff } from 'lucide-react';
-import {
-  UUIDGenerator,
-  Base64Tool,
-  JSONFormatter,
-  DiffChecker,
-  DateTimeInfo,
-  PasswordGenerator,
-  LoremIpsumGenerator
-} from './utilCommands';
 
 // Help menu for utility commands
 export const utilsHelp = (
@@ -65,4 +56,3 @@ export const utilsHelp = (
     </div>
   </div>
 );
-
