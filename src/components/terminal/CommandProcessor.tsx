@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Terminal as TerminalIcon, Wrench, X } from 'lucide-react';
 import { about, skills, projects, experience, education, contact } from '../../commands/baseCommands';
@@ -8,8 +7,6 @@ import {
   DateTimeInfo, 
   PasswordGenerator,
   Base64Tool,
-  JSONFormatter,
-  DiffChecker,
   LoremIpsumGenerator
 } from '../../commands/utilCommands/index';
 
@@ -105,10 +102,6 @@ export const processCommand = (command: string): React.ReactNode => {
       return <UUIDGenerator />;
     case 'base64':
       return <Base64Tool />;
-    case 'json':
-      return <JSONFormatter />;
-    case 'diff':
-      return <DiffChecker />;
     case 'datetime':
       return <DateTimeInfo />;
     case 'password':

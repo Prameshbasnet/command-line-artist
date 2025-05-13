@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Code, Cpu, FlipHorizontal, TerminalSquare, Text, FileJson, Diff } from 'lucide-react';
+import { Code, Cpu, FlipHorizontal, TerminalSquare, Text } from 'lucide-react';
 
 // Help menu for utility commands
 export const utilsHelp = (
@@ -20,18 +20,6 @@ export const utilsHelp = (
               <FlipHorizontal className="w-4 h-4" /> base64
             </td>
             <td className="text-terminal-gray">Encode/decode Base64</td>
-          </tr>
-          <tr>
-            <td className="pr-4 text-terminal-blue flex items-center gap-1">
-              <FileJson className="w-4 h-4" /> json
-            </td>
-            <td className="text-terminal-gray">Format & validate JSON</td>
-          </tr>
-          <tr>
-            <td className="pr-4 text-terminal-blue flex items-center gap-1">
-              <Diff className="w-4 h-4" /> diff
-            </td>
-            <td className="text-terminal-gray">Compare two text blocks</td>
           </tr>
           <tr>
             <td className="pr-4 text-terminal-blue flex items-center gap-1">

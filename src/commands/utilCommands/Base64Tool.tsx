@@ -39,7 +39,7 @@ export const Base64Tool = () => {
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24 resize-none"
+              className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-40 resize-none"
               placeholder={`Enter text to ${mode}...`}
             />
             <button
@@ -67,7 +67,7 @@ export const Base64Tool = () => {
               <textarea
                 readOnly
                 value={output}
-                className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-24 resize-none"
+                className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-40 resize-none"
               />
               <button
                 onClick={copyToClipboard}
