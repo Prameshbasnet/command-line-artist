@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { skillsData } from '../../data/skills';
-import { Code, Database, Wrench, Star } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,7 +13,6 @@ const SkillsSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title animation
       gsap.fromTo(titleRef.current,
         { opacity: 0, y: 50 },
         {
@@ -30,7 +28,6 @@ const SkillsSection = () => {
         }
       );
 
-      // Skill groups animation
       skillGroupRefs.current.forEach((ref, index) => {
         if (ref) {
           gsap.fromTo(ref,
@@ -49,7 +46,6 @@ const SkillsSection = () => {
             }
           );
 
-          // Animate skill tags within each group
           const skillTags = ref.querySelectorAll('.skill-tag');
           gsap.fromTo(skillTags,
             { opacity: 0, scale: 0.8 },
@@ -75,61 +71,36 @@ const SkillsSection = () => {
   }, []);
 
   const skillCategories = [
-    {
-      title: "Languages & Frameworks",
-      icon: Code,
-      skills: skillsData.languages,
-      gradient: "from-blue-500 to-purple-500"
-    },
-    {
-      title: "Databases",
-      icon: Database,
-      skills: skillsData.databases,
-      gradient: "from-green-500 to-teal-500"
-    },
-    {
-      title: "Tools & Technologies",
-      icon: Wrench,
-      skills: skillsData.tools,
-      gradient: "from-orange-500 to-red-500"
-    },
-    {
-      title: "Other Skills",
-      icon: Star,
-      skills: skillsData.other,
-      gradient: "from-purple-500 to-pink-500"
-    }
+    { title: "Languages & Frameworks", skills: skillsData.languages },
+    { title: "Databases", skills: skillsData.databases },
+    { title: "Tools & Technologies", skills: skillsData.tools },
+    { title: "Other Skills", skills: skillsData.other }
   ];
 
   return (
-    <section ref={sectionRef} className="py-20 bg-slate-50">
+    <section ref={sectionRef} className="py-24 bg-gray-50">
       <div className="max-w-6xl mx-auto px-6">
         <h2 
           ref={titleRef}
-          className="text-4xl md:text-5xl font-black text-center mb-16 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"
+          className="text-5xl md:text-6xl font-black text-center mb-20 text-gray-900"
         >
-          Technical Skills
+          Skills
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-12">
           {skillCategories.map((category, index) => (
             <div
               key={index}
               ref={el => skillGroupRefs.current[index] = el}
-              className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-all duration-300"
+              className="bg-white rounded-3xl p-8 shadow-lg"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className={`p-3 bg-gradient-to-r ${category.gradient} rounded-full`}>
-                  <category.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900">{category.title}</h3>
-              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">{category.title}</h3>
               
               <div className="flex flex-wrap gap-3">
                 {category.skills.map((skill, skillIndex) => (
                   <span
                     key={skillIndex}
-                    className={`skill-tag px-4 py-2 bg-gradient-to-r ${category.gradient} text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200`}
+                    className="skill-tag px-4 py-2 bg-gray-900 text-white rounded-full text-sm font-medium hover:bg-gray-700 transition-colors duration-200"
                   >
                     {skill}
                   </span>

@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { educationData } from '../../data/education';
-import { GraduationCap, Calendar } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,7 +14,6 @@ const EducationSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title animation
       gsap.fromTo(titleRef.current,
         { opacity: 0, y: 50 },
         {
@@ -30,12 +29,10 @@ const EducationSection = () => {
         }
       );
 
-      // Education card animation
       gsap.fromTo(educationRef.current,
-        { opacity: 0, scale: 0.9, y: 50 },
+        { opacity: 0, y: 100 },
         {
           opacity: 1,
-          scale: 1,
           y: 0,
           duration: 0.8,
           scrollTrigger: {
@@ -52,11 +49,11 @@ const EducationSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white">
+    <section ref={sectionRef} className="py-24 bg-white">
       <div className="max-w-4xl mx-auto px-6">
         <h2 
           ref={titleRef}
-          className="text-4xl md:text-5xl font-black text-center mb-16 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent"
+          className="text-5xl md:text-6xl font-black text-center mb-20 text-gray-900"
         >
           Education
         </h2>
@@ -65,20 +62,13 @@ const EducationSection = () => {
           <div
             key={index}
             ref={educationRef}
-            className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 mx-auto max-w-2xl"
+            className="bg-gray-50 rounded-3xl p-8 md:p-12 mx-auto max-w-2xl"
           >
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full">
-                <GraduationCap className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold mb-2">{edu.degree}</h3>
-                <p className="text-cyan-300 text-lg font-medium mb-3">{edu.institution}</p>
-                <div className="flex items-center text-gray-300">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  <span>{edu.period}</span>
-                </div>
-              </div>
+            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">{edu.degree}</h3>
+            <p className="text-xl text-gray-600 mb-6">{edu.institution}</p>
+            <div className="flex items-center text-gray-500">
+              <Calendar className="w-5 h-5 mr-3" />
+              <span className="text-lg">{edu.period}</span>
             </div>
           </div>
         ))}
