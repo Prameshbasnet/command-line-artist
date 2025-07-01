@@ -7,8 +7,8 @@ const Navigation = () => {
 
   useEffect(() => {
     gsap.fromTo('.nav-item',
-      { opacity: 0, y: -20 },
-      { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, delay: 1 }
+      { opacity: 0, y: -10 },
+      { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, delay: 0.5 }
     );
   }, []);
 
@@ -21,7 +21,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex justify-center space-x-8">
           {[
@@ -34,10 +34,10 @@ const Navigation = () => {
             <button
               key={item.id}
               onClick={() => scrollToSection(item.id)}
-              className={`nav-item px-4 py-2 rounded-full transition-all duration-300 font-medium text-sm tracking-wide ${
+              className={`nav-item px-3 py-2 transition-all duration-200 font-normal text-sm ${
                 activeSection === item.id
-                  ? 'bg-gray-900 text-white'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  ? 'text-gray-900 border-b-2 border-gray-900'
+                  : 'text-gray-500 hover:text-gray-900'
               }`}
             >
               {item.label}

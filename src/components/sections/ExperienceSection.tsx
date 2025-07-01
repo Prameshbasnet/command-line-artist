@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { experienceData } from '../../data/experience';
-import { Calendar } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,16 +14,14 @@ const ExperienceSection = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(titleRef.current,
-        { opacity: 0, y: 50 },
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 0.6,
           scrollTrigger: {
             trigger: titleRef.current,
             start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
           }
         }
       );
@@ -32,17 +29,15 @@ const ExperienceSection = () => {
       experienceRefs.current.forEach((ref, index) => {
         if (ref) {
           gsap.fromTo(ref,
-            { opacity: 0, y: 100 },
+            { opacity: 0, y: 30 },
             {
               opacity: 1,
               y: 0,
-              duration: 0.8,
-              delay: index * 0.2,
+              duration: 0.5,
+              delay: index * 0.1,
               scrollTrigger: {
                 trigger: ref,
                 start: "top 80%",
-                end: "bottom 20%",
-                toggleActions: "play none none reverse"
               }
             }
           );
@@ -54,36 +49,35 @@ const ExperienceSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 bg-gray-50">
+    <section ref={sectionRef} className="py-20 bg-gray-50">
       <div className="max-w-4xl mx-auto px-6">
         <h2 
           ref={titleRef}
-          className="text-5xl md:text-6xl font-black text-center mb-20 text-gray-900"
+          className="text-3xl md:text-4xl font-light text-center mb-16 text-gray-900"
         >
           Experience
         </h2>
 
-        <div className="space-y-16">
+        <div className="space-y-12">
           {experienceData.map((exp, index) => (
             <div
               key={index}
               ref={el => experienceRefs.current[index] = el}
-              className="bg-white rounded-3xl p-8 md:p-12 shadow-lg hover:shadow-xl transition-all duration-500"
+              className="border-l-2 border-gray-200 pl-8 ml-4"
             >
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">{exp.title}</h3>
-              <div className="flex items-center text-gray-500 mb-8">
-                <Calendar className="w-5 h-5 mr-3" />
-                <span className="text-lg">{exp.period}</span>
+              <div className="relative">
+                <div className="absolute -left-10 top-0 w-4 h-4 bg-gray-900 rounded-full"></div>
+                <h3 className="text-xl md:text-2xl font-normal text-gray-900 mb-2">{exp.title}</h3>
+                <p className="text-sm text-gray-500 mb-6 uppercase tracking-wide">{exp.period}</p>
+                
+                <ul className="space-y-3">
+                  {exp.responsibilities.map((responsibility, idx) => (
+                    <li key={idx} className="text-gray-600 leading-relaxed">
+                      {responsibility}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              
-              <ul className="space-y-4">
-                {exp.responsibilities.map((responsibility, idx) => (
-                  <li key={idx} className="flex items-start">
-                    <div className="w-2 h-2 bg-gray-900 rounded-full mt-3 mr-4 flex-shrink-0"></div>
-                    <span className="text-gray-700 text-lg leading-relaxed">{responsibility}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
         </div>
