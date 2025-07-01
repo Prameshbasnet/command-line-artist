@@ -40,14 +40,14 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
         const command = lastItem.querySelector('.terminal-prompt');
         const response = lastItem.querySelector('.response');
         
-        if (command instanceof HTMLElement) {
+        if (command && command instanceof HTMLElement) {
           animateNewCommand(command);
         }
         
-        if (response instanceof HTMLElement) {
+        if (response && response instanceof HTMLElement) {
           // Check if response contains utility tools
           const utilityTool = response.querySelector('[class*="mb-4"]:first-child');
-          if (utilityTool instanceof HTMLElement && utilityTool.textContent?.includes('Generator') || utilityTool.textContent?.includes('Encoder') || utilityTool.textContent?.includes('Decoder')) {
+          if (utilityTool instanceof HTMLElement && (utilityTool.textContent?.includes('Generator') || utilityTool.textContent?.includes('Encoder') || utilityTool.textContent?.includes('Decoder'))) {
             animateUtilityTool(utilityTool);
           } else {
             animateResponse(response);
