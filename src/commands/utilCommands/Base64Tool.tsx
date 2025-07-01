@@ -19,7 +19,6 @@ export const Base64Tool = () => {
 
   const toggleMode = () => {
     setMode(mode === 'encode' ? 'decode' : 'encode');
-    // Clear the output when switching modes
     setOutput('');
   };
 
@@ -39,7 +38,7 @@ export const Base64Tool = () => {
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-40 resize-none"
+              className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-40 resize-none focus:outline-none focus:border-terminal-blue"
               placeholder={`Enter text to ${mode}...`}
             />
             <button
@@ -67,7 +66,7 @@ export const Base64Tool = () => {
               <textarea
                 readOnly
                 value={output}
-                className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-40 resize-none"
+                className="bg-terminal-black bg-opacity-50 border border-terminal-darkgray rounded-md p-2 text-terminal-green font-mono w-full h-40 resize-none focus:outline-none"
               />
               <button
                 onClick={copyToClipboard}

@@ -29,45 +29,37 @@ export const useTerminal = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  // Handle command execution
   const executeCommand = (cmd: string) => {
     const command = cmd.trim().toLowerCase();
     
-    // Add to command history
     if (command) {
       setCommandHistory(prev => [command, ...prev]);
       setHistoryIndex(-1);
     }
     
-    // Special handling for clear command
     if (command === 'clear') {
       setHistory([]);
       setInput('');
       return;
     }
     
-    // Process the command
     const response = processCommand(command);
-    
-    // Create new history item
     const newHistoryItem = { command: cmd, response };
     setHistory(prev => [...prev, newHistoryItem]);
     setInput('');
   };
 
-  // Scroll to bottom of terminal
   const scrollToBottom = () => {
     if (scrollAreaRef.current) {
       const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
       if (scrollContainer) {
         setTimeout(() => {
           scrollContainer.scrollTop = scrollContainer.scrollHeight;
-        }, 10);
+        }, 100);
       }
     }
   };
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
@@ -75,14 +67,12 @@ export const useTerminal = () => {
     }
   };
 
-  // Focus input on terminal click
   const focusInput = () => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   };
 
-  // Handle keyboard navigation for command history
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -104,14 +94,12 @@ export const useTerminal = () => {
     }
   };
 
-  // Auto-focus input on mount
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
 
-  // Scroll to bottom whenever history changes
   useEffect(() => {
     scrollToBottom();
   }, [history]);

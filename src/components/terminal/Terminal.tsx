@@ -4,6 +4,7 @@ import TerminalHeader from './TerminalHeader';
 import TerminalContent from './TerminalContent';
 import { ScrollArea } from '../ui/scroll-area';
 import { useTerminal } from './useTerminal';
+import { useTerminalAnimations } from '../../hooks/useTerminalAnimations';
 import { useIsMobile } from '../../hooks/use-mobile';
 import { aboutData } from '../../data/about';
 
@@ -21,11 +22,13 @@ const Terminal = () => {
     handleKeyDown,
   } = useTerminal();
   
+  const { terminalRef, animateNewCommand, animateResponse, animateUtilityTool } = useTerminalAnimations();
   const isMobile = useIsMobile();
 
   return (
     <div 
-      className="terminal-window w-full max-w-4xl mx-auto shadow-2xl rounded-lg overflow-hidden border border-terminal-darkgray bg-gradient-to-b from-terminal-black to-[#0F0F16] transition-all hover:shadow-[0_0_15px_rgba(78,245,167,0.25)]"
+      ref={terminalRef}
+      className="terminal-window w-full max-w-4xl mx-auto shadow-2xl rounded-lg overflow-hidden border border-terminal-darkgray bg-gradient-to-b from-terminal-black to-[#0F0F16] transition-all"
       onClick={focusInput}
     >
       <TerminalHeader title={`${aboutData.name.toLowerCase()}@portfolio:~$`} />
@@ -42,6 +45,9 @@ const Terminal = () => {
           inputRef={inputRef}
           contentRef={contentRef}
           handleKeyDown={handleKeyDown}
+          animateNewCommand={animateNewCommand}
+          animateResponse={animateResponse}
+          animateUtilityTool={animateUtilityTool}
         />
       </ScrollArea>
     </div>

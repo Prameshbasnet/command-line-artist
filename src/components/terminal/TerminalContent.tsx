@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useIsMobile } from '../../hooks/use-mobile';
 
 interface TerminalContentProps {
@@ -11,6 +11,9 @@ interface TerminalContentProps {
   inputRef: React.RefObject<HTMLInputElement>;
   contentRef: React.RefObject<HTMLDivElement>;
   handleKeyDown?: (e: React.KeyboardEvent) => void;
+  animateNewCommand: (element: HTMLElement) => void;
+  animateResponse: (element: HTMLElement) => void;
+  animateUtilityTool: (element: HTMLElement) => void;
 }
 
 const TerminalContent: React.FC<TerminalContentProps> = ({
@@ -21,9 +24,39 @@ const TerminalContent: React.FC<TerminalContentProps> = ({
   handleSubmit,
   inputRef,
   contentRef,
-  handleKeyDown
+  handleKeyDown,
+  animateNewCommand,
+  animateResponse,
+  animateUtilityTool
 }) => {
   const isMobile = useIsMobile();
+  const lastHistoryLength = useRef(history.length);
+  
+  useEffect(() => {
+    // Animate new history items
+    if (history.length > lastHistoryLength.current) {
+      const lastItem = contentRef.current?.querySelector('.command-response-pair:last-child');
+      if (lastItem) {
+        const command = lastItem.querySelector('.terminal-prompt');
+        const response = lastItem.querySelector('.response');
+        
+        if (command instanceof HTMLElement) {
+          animateNewCommand(command);
+        }
+        
+        if (response instanceof HTMLElement) {
+          // Check if response contains utility tools
+          const utilityTool = response.querySelector('[class*="mb-4"]:first-child');
+          if (utilityTool instanceof HTMLElement && utilityTool.textContent?.includes('Generator') || utilityTool.textContent?.includes('Encoder') || utilityTool.textContent?.includes('Decoder')) {
+            animateUtilityTool(utilityTool);
+          } else {
+            animateResponse(response);
+          }
+        }
+      }
+    }
+    lastHistoryLength.current = history.length;
+  }, [history, animateNewCommand, animateResponse, animateUtilityTool]);
   
   return (
     <div className="terminal-content px-2 sm:px-5 py-3 sm:py-4 font-mono text-xs sm:text-sm leading-relaxed" ref={contentRef}>
