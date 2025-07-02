@@ -14,28 +14,64 @@ const HeroSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Create floating particles
+      gsap.set(".particle", {
+        opacity: 0,
+        scale: 0,
+        x: () => gsap.utils.random(-100, 100),
+        y: () => gsap.utils.random(-100, 100)
+      });
+
       const tl = gsap.timeline();
       
+      // Hero entrance animation
       tl.fromTo(nameRef.current, 
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+        { opacity: 0, y: 50, rotationX: -15 },
+        { opacity: 1, y: 0, rotationX: 0, duration: 1.2, ease: "power3.out" }
       )
       .fromTo(titleRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.4"
+        { opacity: 0, y: 30, filter: "blur(10px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power2.out" }, "-=0.6"
       )
       .fromTo(descRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.3"
+        { opacity: 0, y: 30, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(1.7)" }, "-=0.4"
       )
+      .to(".particle", {
+        opacity: 1,
+        scale: 1,
+        duration: 2,
+        stagger: 0.1,
+        ease: "elastic.out(1, 0.5)"
+      }, "-=0.8")
       .fromTo(contactRef.current?.children || [],
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: "power2.out" }, "-=0.2"
+        { opacity: 0, y: 20, rotationY: 45 },
+        { opacity: 1, y: 0, rotationY: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }, "-=1"
       )
       .fromTo(socialRef.current?.children || [],
-        { opacity: 0, scale: 0.9 },
-        { opacity: 1, scale: 1, duration: 0.3, stagger: 0.05, ease: "power2.out" }, "-=0.1"
+        { opacity: 0, scale: 0, rotation: 180 },
+        { opacity: 1, scale: 1, rotation: 0, duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" }, "-=0.4"
       );
+
+      // Continuous floating animation for particles
+      gsap.to(".particle", {
+        y: "+=20",
+        rotation: "+=10",
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        stagger: 0.2
+      });
+
+      // Text glow animation
+      gsap.to(nameRef.current, {
+        textShadow: "0 0 20px rgba(0, 221, 179, 0.5)",
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "power2.inOut"
+      });
     }, heroRef);
 
     return () => ctx.revert();
@@ -43,8 +79,23 @@ const HeroSection = () => {
 
   return (
     <section ref={heroRef} className="min-h-screen flex items-center justify-center bg-gradient-dark px-8 relative overflow-hidden">
+      {/* Animated Particles */}
+      {Array.from({ length: 12 }).map((_, i) => (
+        <div
+          key={i}
+          className="particle absolute w-2 h-2 bg-primary rounded-full opacity-20"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+        />
+      ))}
+      
       {/* Background Grid */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMEREQjMiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iNyIgY3k9IjciIHI9IjEiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
+      
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10"></div>
       
       <div className="text-center max-w-6xl mx-auto relative z-10">
         <div className="mb-8">
