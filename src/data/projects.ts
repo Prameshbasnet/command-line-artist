@@ -1,29 +1,29 @@
-
 export const projectsData = [
   {
-    name: "Online Digital Member Onboarding Solution (Everest Federal Credit Union - EFCU)",
-    technologies: ".NET, Next.js, AWS Cognito, AWS S3, Twilio, DocuSign",
+    name: "Prabhu Budget Management System",
+    technologies: ".NET Core, React, PostgreSQL",
     description: [
-      "Developed a comprehensive online platform enabling users to open accounts and apply for loans (individual and business).",
-      "Built a secure authentication mechanism using AWS Cognito and implemented seamless file storage via AWS S3.",
-      "Utilized Twilio for OTP-based verification and integrated DocuSign to handle electronic document signatures."
+      "Developed comprehensive backend API with .NET Core",
+      "Built responsive dashboard interface with React",
+      "Implemented secure user authentication and authorization"
     ]
   },
   {
-    name: "Kiosk Application",
-    technologies: "Flutter, React",
+    name: "EFCU Digital Onboarding",
+    technologies: "AWS, Twilio, DocuSign, .NET",
     description: [
-      "Created a self-service kiosk application for cheque deposit, account statements, and account management.",
-      "Developed a React-based admin dashboard for operational oversight."
+      "Integrated AWS Cognito for secure authentication",
+      "Implemented SMS verification with Twilio API",
+      "Electronic document signing with DocuSign integration"
     ]
   },
   {
-    name: "Terminal Portfolio",
-    technologies: "React, TypeScript, Tailwind CSS",
+    name: "Windows Kiosk Application",
+    technologies: "Flutter, Windows Desktop, SQLite",
     description: [
-      "Built an interactive terminal-style portfolio website using React and TypeScript.",
-      "Implemented custom command processing system with various utility tools and games.",
-      "Created a responsive design with professional terminal aesthetics and animations."
+      "Developed Flutter application for Windows platform",
+      "Implemented cheque deposit and account management features",
+      "Built offline-capable data synchronization system"
     ]
   }
 ];

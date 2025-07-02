@@ -42,62 +42,79 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section ref={heroRef} className="min-h-screen flex items-center justify-center bg-white px-6">
-      <div className="text-center max-w-4xl mx-auto">
+    <section ref={heroRef} className="min-h-screen flex items-center justify-center bg-gradient-dark px-8 relative overflow-hidden">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMEREQjMiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iNyIgY3k9IjciIHI9IjEiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
+      
+      <div className="text-center max-w-6xl mx-auto relative z-10">
+        <div className="mb-8">
+          <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-8">
+            <span className="text-primary text-sm font-medium">Available for new opportunities</span>
+          </div>
+        </div>
+        
         <h1 
           ref={nameRef}
-          className="text-4xl md:text-6xl lg:text-7xl font-light mb-4 text-gray-900 tracking-tight leading-none"
+          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-gradient tracking-tight leading-none"
         >
-          {aboutData.name}
+          PRAMESH BASNET
         </h1>
         
         <p 
           ref={titleRef}
-          className="text-lg md:text-xl font-normal mb-6 text-gray-600 tracking-wide uppercase letter-spacing-wide"
+          className="text-2xl md:text-3xl font-light mb-8 text-foreground tracking-wide"
         >
-          Software Engineer
+          Full-Stack Software Engineer
         </p>
 
         <p 
           ref={descRef}
-          className="text-base md:text-lg mb-8 text-gray-500 max-w-2xl mx-auto leading-relaxed font-light"
+          className="text-lg md:text-xl mb-12 text-muted-foreground max-w-3xl mx-auto leading-relaxed"
         >
-          Crafting scalable solutions with .NET Core & React.js
+          I craft exceptional digital experiences with modern technologies. 
+          Specializing in .NET Core, React.js, and cloud-native solutions.
         </p>
 
-        <div ref={contactRef} className="flex flex-wrap justify-center gap-6 mb-8 text-sm text-gray-500">
-          <div className="flex items-center space-x-2">
-            <MapPin className="w-4 h-4" />
-            <span>{aboutData.location}</span>
+        <div ref={contactRef} className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
+          <div className="bg-card border border-border rounded-xl p-4 hover:border-primary/50 transition-all duration-300 group">
+            <MapPin className="w-5 h-5 text-primary mb-2 group-hover:scale-110 transition-transform" />
+            <p className="text-xs text-muted-foreground mb-1">Location</p>
+            <p className="text-sm text-foreground font-medium">{aboutData.location}</p>
           </div>
-          <div className="flex items-center space-x-2">
-            <Phone className="w-4 h-4" />
-            <span>{aboutData.phone}</span>
+          <div className="bg-card border border-border rounded-xl p-4 hover:border-primary/50 transition-all duration-300 group">
+            <Phone className="w-5 h-5 text-primary mb-2 group-hover:scale-110 transition-transform" />
+            <p className="text-xs text-muted-foreground mb-1">Phone</p>
+            <p className="text-sm text-foreground font-medium">{aboutData.phone}</p>
           </div>
-          <div className="flex items-center space-x-2">
-            <Mail className="w-4 h-4" />
-            <span>{aboutData.email}</span>
+          <div className="bg-card border border-border rounded-xl p-4 hover:border-primary/50 transition-all duration-300 group">
+            <Mail className="w-5 h-5 text-primary mb-2 group-hover:scale-110 transition-transform" />
+            <p className="text-xs text-muted-foreground mb-1">Email</p>
+            <p className="text-sm text-foreground font-medium">{aboutData.email}</p>
           </div>
-          <div className="flex items-center space-x-2">
-            <Globe className="w-4 h-4" />
-            <span>{aboutData.website}</span>
+          <div className="bg-card border border-border rounded-xl p-4 hover:border-primary/50 transition-all duration-300 group">
+            <Globe className="w-5 h-5 text-primary mb-2 group-hover:scale-110 transition-transform" />
+            <p className="text-xs text-muted-foreground mb-1">Website</p>
+            <p className="text-sm text-foreground font-medium">{aboutData.website}</p>
           </div>
         </div>
 
-        <div ref={socialRef} className="flex justify-center space-x-4">
+        <div ref={socialRef} className="flex justify-center space-x-6">
           {[
-            { icon: Linkedin, href: aboutData.linkedin },
-            { icon: Github, href: aboutData.github },
-            { icon: Mail, href: `mailto:${aboutData.email}` }
+            { icon: Linkedin, href: aboutData.linkedin, label: 'LinkedIn' },
+            { icon: Github, href: aboutData.github, label: 'GitHub' },
+            { icon: Mail, href: `mailto:${aboutData.email}`, label: 'Email' }
           ].map((social, index) => (
             <a 
               key={index}
               href={social.href} 
               target={social.icon !== Mail ? "_blank" : undefined}
               rel={social.icon !== Mail ? "noopener noreferrer" : undefined}
-              className="w-10 h-10 bg-gray-100 text-gray-600 rounded-full flex items-center justify-center hover:bg-gray-900 hover:text-white transition-all duration-300"
+              className="group relative w-14 h-14 bg-card border border-border rounded-xl flex items-center justify-center hover:border-primary hover:shadow-glow transition-all duration-300"
             >
-              <social.icon className="w-4 h-4" />
+              <social.icon className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+              <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                {social.label}
+              </span>
             </a>
           ))}
         </div>

@@ -62,14 +62,8 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				terminal: {
-					black: '#0D0D12',
-					green: '#4EF5A7',
-					blue: '#00C2FF',
-					gray: '#CCCCCC',
-					darkgray: '#2B2B2B',
-					purple: '#9b87f5'
-				}
+				'gradient-primary': 'linear-gradient(135deg, hsl(164 95% 43%), hsl(180 100% 50%))',
+				'gradient-dark': 'linear-gradient(135deg, hsl(222 47% 3%), hsl(225 50% 5%))'
 			},
 			fontFamily: {
 				mono: ['JetBrains Mono', 'Ubuntu Mono', 'monospace'],

@@ -44,24 +44,33 @@ const EducationSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 bg-white">
-      <div className="max-w-4xl mx-auto px-6">
-        <h2 
-          ref={titleRef}
-          className="text-3xl md:text-4xl font-light text-center mb-16 text-gray-900"
-        >
-          Education
-        </h2>
+    <section ref={sectionRef} className="py-24 bg-card">
+      <div className="max-w-4xl mx-auto px-8">
+        <div className="text-center mb-20">
+          <h2 
+            ref={titleRef}
+            className="text-4xl md:text-6xl font-bold text-gradient mb-6"
+          >
+            Education
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Academic foundation and continuous learning journey
+          </p>
+        </div>
 
         {educationData.map((edu, index) => (
           <div
             key={index}
             ref={educationRef}
-            className="text-center max-w-2xl mx-auto"
+            className="bg-background border border-border rounded-2xl p-8 max-w-3xl mx-auto hover:border-primary/50 hover:shadow-glow transition-all duration-500"
           >
-            <h3 className="text-xl md:text-2xl font-normal mb-3 text-gray-900">{edu.degree}</h3>
-            <p className="text-lg text-gray-600 mb-2">{edu.institution}</p>
-            <p className="text-sm text-gray-500 uppercase tracking-wide">{edu.period}</p>
+            <div className="text-center">
+              <h3 className="text-3xl font-bold text-foreground mb-4">{edu.degree}</h3>
+              <p className="text-xl text-primary mb-4 font-medium">{edu.institution}</p>
+              <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full">
+                <p className="text-sm text-primary font-medium">{edu.period}</p>
+              </div>
+            </div>
           </div>
         ))}
       </div>

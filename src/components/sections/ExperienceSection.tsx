@@ -49,34 +49,49 @@ const ExperienceSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 bg-gray-50">
-      <div className="max-w-4xl mx-auto px-6">
-        <h2 
-          ref={titleRef}
-          className="text-3xl md:text-4xl font-light text-center mb-16 text-gray-900"
-        >
-          Experience
-        </h2>
+    <section ref={sectionRef} className="py-24 bg-background">
+      <div className="max-w-6xl mx-auto px-8">
+        <div className="text-center mb-20">
+          <h2 
+            ref={titleRef}
+            className="text-4xl md:text-6xl font-bold text-gradient mb-6"
+          >
+            Experience
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Building impactful solutions across various technologies and domains
+          </p>
+        </div>
 
-        <div className="space-y-12">
+        <div className="space-y-16">
           {experienceData.map((exp, index) => (
             <div
               key={index}
               ref={el => experienceRefs.current[index] = el}
-              className="border-l-2 border-gray-200 pl-8 ml-4"
+              className="relative bg-card border border-border rounded-2xl p-8 hover:border-primary/50 hover:shadow-glow transition-all duration-500"
             >
-              <div className="relative">
-                <div className="absolute -left-10 top-0 w-4 h-4 bg-gray-900 rounded-full"></div>
-                <h3 className="text-xl md:text-2xl font-normal text-gray-900 mb-2">{exp.title}</h3>
-                <p className="text-sm text-gray-500 mb-6 uppercase tracking-wide">{exp.period}</p>
+              <div className="absolute -left-4 top-8 w-8 h-8 bg-primary rounded-full shadow-glow flex items-center justify-center">
+                <div className="w-3 h-3 bg-background rounded-full"></div>
+              </div>
+              
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-1">
+                  <h3 className="text-2xl font-bold text-foreground mb-2">{exp.title}</h3>
+                  <div className="inline-block px-3 py-1 bg-primary/10 border border-primary/20 rounded-full">
+                    <p className="text-sm text-primary font-medium">{exp.period}</p>
+                  </div>
+                </div>
                 
-                <ul className="space-y-3">
-                  {exp.responsibilities.map((responsibility, idx) => (
-                    <li key={idx} className="text-gray-600 leading-relaxed">
-                      {responsibility}
-                    </li>
-                  ))}
-                </ul>
+                <div className="md:col-span-2">
+                  <ul className="space-y-4">
+                    {exp.responsibilities.map((responsibility, idx) => (
+                      <li key={idx} className="flex items-start space-x-3">
+                        <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                        <span className="text-muted-foreground leading-relaxed">{responsibility}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           ))}

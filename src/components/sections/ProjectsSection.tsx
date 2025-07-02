@@ -49,36 +49,60 @@ const ProjectsSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
-        <h2 
-          ref={titleRef}
-          className="text-3xl md:text-4xl font-light text-center mb-16 text-gray-900"
-        >
-          Projects
-        </h2>
+    <section ref={sectionRef} className="py-24 bg-card">
+      <div className="max-w-7xl mx-auto px-8">
+        <div className="text-center mb-20">
+          <h2 
+            ref={titleRef}
+            className="text-4xl md:text-6xl font-bold text-gradient mb-6"
+          >
+            Featured Projects
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Showcasing innovative solutions and technical expertise
+          </p>
+        </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projectsData.map((project, index) => (
             <div
               key={index}
               ref={el => projectRefs.current[index] = el}
-              className="border border-gray-100 p-6 hover:border-gray-200 transition-all duration-300"
+              className="group relative bg-background border border-border rounded-2xl p-8 hover:border-primary/50 hover:shadow-glow transition-all duration-500 overflow-hidden"
             >
-              <h3 className="text-lg font-normal mb-3 text-gray-900">{project.name}</h3>
+              {/* Background Pattern */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
               
-              <div className="mb-4">
-                <p className="text-xs font-normal text-gray-400 mb-2 uppercase tracking-wide">Technologies</p>
-                <p className="text-sm text-gray-600">{project.technologies}</p>
+              <div className="relative z-10">
+                <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
+                  {project.name}
+                </h3>
+                
+                <div className="mb-6">
+                  <p className="text-xs font-medium text-primary mb-3 uppercase tracking-wider">
+                    Tech Stack
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.split(', ').map((tech, techIndex) => (
+                      <span 
+                        key={techIndex}
+                        className="px-3 py-1 bg-primary/10 border border-primary/20 text-primary text-xs rounded-full"
+                      >
+                        {tech.trim()}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                <ul className="space-y-3">
+                  {project.description.map((desc, idx) => (
+                    <li key={idx} className="flex items-start space-x-3">
+                      <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                      <span className="text-muted-foreground leading-relaxed text-sm">{desc}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              
-              <ul className="space-y-2">
-                {project.description.map((desc, idx) => (
-                  <li key={idx} className="text-sm text-gray-600 leading-relaxed">
-                    {desc}
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
         </div>
