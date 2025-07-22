@@ -1,174 +1,268 @@
 
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { Github, Linkedin, Mail, MapPin, Phone, Globe } from 'lucide-react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Github, Linkedin, Mail, ArrowDown, Terminal, Zap } from 'lucide-react';
 import { aboutData } from '../../data/about';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
-  const nameRef = useRef<HTMLHeadingElement>(null);
-  const titleRef = useRef<HTMLParagraphElement>(null);
-  const descRef = useRef<HTMLParagraphElement>(null);
-  const contactRef = useRef<HTMLDivElement>(null);
-  const socialRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const nameRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Create floating particles
-      gsap.set(".particle", {
-        opacity: 0,
-        scale: 0,
-        x: () => gsap.utils.random(-100, 100),
-        y: () => gsap.utils.random(-100, 100)
-      });
+      // Create matrix rain effect
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-      const tl = gsap.timeline();
-      
-      // Hero entrance animation
-      tl.fromTo(nameRef.current, 
-        { opacity: 0, y: 50, rotationX: -15 },
-        { opacity: 1, y: 0, rotationX: 0, duration: 1.2, ease: "power3.out" }
-      )
-      .fromTo(titleRef.current,
-        { opacity: 0, y: 30, filter: "blur(10px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power2.out" }, "-=0.6"
-      )
-      .fromTo(descRef.current,
-        { opacity: 0, y: 30, scale: 0.9 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(1.7)" }, "-=0.4"
-      )
-      .to(".particle", {
-        opacity: 1,
-        scale: 1,
-        duration: 2,
-        stagger: 0.1,
-        ease: "elastic.out(1, 0.5)"
-      }, "-=0.8")
-      .fromTo(contactRef.current?.children || [],
-        { opacity: 0, y: 20, rotationY: 45 },
-        { opacity: 1, y: 0, rotationY: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" }, "-=1"
-      )
-      .fromTo(socialRef.current?.children || [],
-        { opacity: 0, scale: 0, rotation: 180 },
-        { opacity: 1, scale: 1, rotation: 0, duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" }, "-=0.4"
+        const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
+        const matrixArray = matrix.split("");
+        const fontSize = 10;
+        const columns = canvas.width / fontSize;
+        const drops: number[] = [];
+
+        for (let x = 0; x < columns; x++) {
+          drops[x] = 1;
+        }
+
+        function draw() {
+          if (!ctx || !canvas) return;
+          
+          ctx.fillStyle = 'rgba(15, 15, 15, 0.04)';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+          ctx.fillStyle = '#00ffff';
+          ctx.font = fontSize + 'px monospace';
+          
+          for (let i = 0; i < drops.length; i++) {
+            const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+              drops[i] = 0;
+            }
+            drops[i]++;
+          }
+        }
+
+        const interval = setInterval(draw, 35);
+        
+        const handleResize = () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        };
+        
+        window.addEventListener('resize', handleResize);
+        
+        return () => {
+          clearInterval(interval);
+          window.removeEventListener('resize', handleResize);
+        };
+      }
+
+      // Glitch effect on name
+      const nameChars = nameRef.current?.querySelectorAll('.char');
+      if (nameChars) {
+        gsap.set(nameChars, { opacity: 0, y: 100, rotationX: -90 });
+        
+        gsap.to(nameChars, {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          duration: 1.2,
+          stagger: 0.05,
+          ease: "back.out(1.7)",
+          delay: 0.5
+        });
+
+        // Random glitch effect
+        const glitchLoop = () => {
+          const randomChar = nameChars[Math.floor(Math.random() * nameChars.length)];
+          gsap.set(randomChar, { 
+            color: Math.random() > 0.5 ? '#ff00ff' : '#00ffff',
+            scaleX: Math.random() > 0.5 ? 1.2 : 0.8,
+            skewX: gsap.utils.random(-5, 5)
+          });
+          
+          gsap.to(randomChar, {
+            color: '#ffffff',
+            scaleX: 1,
+            skewX: 0,
+            duration: 0.1,
+            delay: 0.05
+          });
+        };
+
+        const glitchInterval = setInterval(glitchLoop, 2000);
+        
+        // Cleanup
+        return () => clearInterval(glitchInterval);
+      }
+
+      // Title animation
+      gsap.fromTo(titleRef.current,
+        { opacity: 0, y: 50, filter: "blur(20px)" },
+        { 
+          opacity: 1, 
+          y: 0, 
+          filter: "blur(0px)", 
+          duration: 1, 
+          ease: "power3.out",
+          delay: 1.5
+        }
       );
 
-      // Continuous floating animation for particles
-      gsap.to(".particle", {
-        y: "+=20",
-        rotation: "+=10",
-        duration: 3,
+      // CTA animation
+      gsap.fromTo(ctaRef.current,
+        { opacity: 0, scale: 0.8 },
+        { 
+          opacity: 1, 
+          scale: 1, 
+          duration: 0.8, 
+          ease: "elastic.out(1, 0.75)",
+          delay: 2
+        }
+      );
+
+      // Scroll indicator animation
+      gsap.to('.scroll-indicator', {
+        y: 10,
+        duration: 1.5,
         repeat: -1,
         yoyo: true,
-        ease: "sine.inOut",
-        stagger: 0.2
+        ease: "sine.inOut"
       });
 
-      // Text glow animation
-      gsap.to(nameRef.current, {
-        textShadow: "0 0 20px rgba(0, 221, 179, 0.5)",
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "power2.inOut"
-      });
     }, heroRef);
 
     return () => ctx.revert();
   }, []);
 
+  const handleScrollDown = () => {
+    const nextSection = document.getElementById('experience');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section ref={heroRef} className="min-h-screen flex items-center justify-center bg-gradient-dark px-8 relative overflow-hidden">
-      {/* Animated Particles */}
-      {Array.from({ length: 12 }).map((_, i) => (
-        <div
-          key={i}
-          className="particle absolute w-2 h-2 bg-primary rounded-full opacity-20"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-        />
-      ))}
+    <section 
+      ref={heroRef} 
+      className="min-h-screen relative overflow-hidden bg-background flex items-center justify-center"
+    >
+      {/* Matrix Rain Background */}
+      <canvas 
+        ref={canvasRef}
+        className="absolute inset-0 opacity-30 pointer-events-none"
+      />
       
-      {/* Background Grid */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMEREQjMiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iNyIgY3k9IjciIHI9IjEiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
+      {/* Noise Overlay */}
+      <div className="absolute inset-0 bg-noise opacity-50 pointer-events-none" />
       
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10"></div>
-      
-      <div className="text-center max-w-6xl mx-auto relative z-10">
-        <div className="mb-8">
-          <div className="inline-block px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-8">
-            <span className="text-primary text-sm font-medium">Available for new opportunities</span>
-          </div>
-        </div>
-        
-        <h1 
-          ref={nameRef}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-gradient tracking-tight leading-none"
-        >
-          PRAMESH BASNET
-        </h1>
-        
-        <p 
-          ref={titleRef}
-          className="text-2xl md:text-3xl font-light mb-8 text-foreground tracking-wide"
-        >
-          Full-Stack Software Engineer
-        </p>
-
-        <p 
-          ref={descRef}
-          className="text-lg md:text-xl mb-12 text-muted-foreground max-w-3xl mx-auto leading-relaxed"
-        >
-          I craft exceptional digital experiences with modern technologies. 
-          Specializing in .NET Core, React.js, and cloud-native solutions.
-        </p>
-
-        <div ref={contactRef} className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
-          <div className="bg-card border border-border rounded-xl p-4 hover:border-primary/50 transition-all duration-300 group">
-            <MapPin className="w-5 h-5 text-primary mb-2 group-hover:scale-110 transition-transform" />
-            <p className="text-xs text-muted-foreground mb-1">Location</p>
-            <p className="text-sm text-foreground font-medium">{aboutData.location}</p>
-          </div>
-          <div className="bg-card border border-border rounded-xl p-4 hover:border-primary/50 transition-all duration-300 group">
-            <Phone className="w-5 h-5 text-primary mb-2 group-hover:scale-110 transition-transform" />
-            <p className="text-xs text-muted-foreground mb-1">Phone</p>
-            <p className="text-sm text-foreground font-medium">{aboutData.phone}</p>
-          </div>
-          <div className="bg-card border border-border rounded-xl p-4 hover:border-primary/50 transition-all duration-300 group">
-            <Mail className="w-5 h-5 text-primary mb-2 group-hover:scale-110 transition-transform" />
-            <p className="text-xs text-muted-foreground mb-1">Email</p>
-            <p className="text-sm text-foreground font-medium">{aboutData.email}</p>
-          </div>
-          <div className="bg-card border border-border rounded-xl p-4 hover:border-primary/50 transition-all duration-300 group">
-            <Globe className="w-5 h-5 text-primary mb-2 group-hover:scale-110 transition-transform" />
-            <p className="text-xs text-muted-foreground mb-1">Website</p>
-            <p className="text-sm text-foreground font-medium">{aboutData.website}</p>
-          </div>
+      {/* Main Content */}
+      <div className="relative z-10 text-center px-8 max-w-6xl mx-auto">
+        {/* Status Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-card/50 backdrop-blur-sm border border-primary/30 rounded-full mb-12 brutal-hover">
+          <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+          <span className="font-mono text-sm text-primary">AVAILABLE FOR WORK</span>
         </div>
 
-        <div ref={socialRef} className="flex justify-center space-x-6">
+        {/* Animated Name */}
+        <div ref={nameRef} className="mb-8">
+          <h1 className="font-display text-6xl md:text-8xl lg:text-9xl font-black leading-none tracking-tighter">
+            {"PRAMESH BASNET".split('').map((char, index) => (
+              <span 
+                key={index} 
+                className={`char inline-block ${char === ' ' ? 'w-4' : ''} text-gradient hover:scale-110 transition-transform cursor-default`}
+                data-cursor="hover"
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))}
+          </h1>
+        </div>
+
+        {/* Animated Title */}
+        <div ref={titleRef} className="mb-16">
+          <p className="font-mono text-xl md:text-2xl text-muted-foreground mb-4 glitch" data-text="CREATIVE DEVELOPER">
+            CREATIVE DEVELOPER
+          </p>
+          <p className="text-lg md:text-xl max-w-2xl mx-auto text-muted-foreground/80 leading-relaxed">
+            Crafting <span className="text-primary font-mono">interactive experiences</span> at the intersection of 
+            <span className="text-gradient font-medium"> design & technology</span>
+          </p>
+        </div>
+
+        {/* CTA Section */}
+        <div ref={ctaRef} className="flex flex-col md:flex-row items-center justify-center gap-6 mb-20">
+          <button 
+            className="group relative px-8 py-4 bg-primary text-background font-mono font-bold text-lg uppercase tracking-wider brutal-hover border-2 border-primary hover:bg-transparent hover:text-primary transition-all duration-300"
+            data-cursor="hover"
+          >
+            <span className="relative z-10">VIEW WORK</span>
+            <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </button>
+          
+          <a 
+            href={`mailto:${aboutData.email}`}
+            className="group relative px-8 py-4 border-2 border-muted-foreground text-muted-foreground font-mono font-bold text-lg uppercase tracking-wider brutal-hover hover:border-primary hover:text-primary transition-all duration-300"
+            data-cursor="hover"
+          >
+            GET IN TOUCH
+          </a>
+        </div>
+
+        {/* Social Links */}
+        <div className="flex justify-center gap-6 mb-16">
           {[
-            { icon: Linkedin, href: aboutData.linkedin, label: 'LinkedIn' },
-            { icon: Github, href: aboutData.github, label: 'GitHub' },
-            { icon: Mail, href: `mailto:${aboutData.email}`, label: 'Email' }
+            { icon: Github, href: aboutData.github, label: 'GITHUB' },
+            { icon: Linkedin, href: aboutData.linkedin, label: 'LINKEDIN' },
+            { icon: Mail, href: `mailto:${aboutData.email}`, label: 'EMAIL' }
           ].map((social, index) => (
-            <a 
+            <a
               key={index}
-              href={social.href} 
+              href={social.href}
               target={social.icon !== Mail ? "_blank" : undefined}
               rel={social.icon !== Mail ? "noopener noreferrer" : undefined}
-              className="group relative w-14 h-14 bg-card border border-border rounded-xl flex items-center justify-center hover:border-primary hover:shadow-glow transition-all duration-300"
+              className="group relative p-3 border border-muted-foreground/30 hover:border-primary transition-all duration-300 brutal-hover"
+              data-cursor="hover"
             >
               <social.icon className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
-              <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 font-mono text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
                 {social.label}
               </span>
             </a>
           ))}
         </div>
+
+        {/* Scroll Indicator */}
+        <button 
+          onClick={handleScrollDown}
+          className="scroll-indicator group flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
+          data-cursor="hover"
+        >
+          <span className="font-mono text-xs uppercase tracking-wider">SCROLL TO EXPLORE</span>
+          <ArrowDown className="w-5 h-5 group-hover:scale-110 transition-transform" />
+        </button>
+      </div>
+
+      {/* Corner Elements */}
+      <div className="absolute top-8 left-8 font-mono text-xs text-muted-foreground/50">
+        <div>PORTFOLIO.2024</div>
+        <div className="mt-1">v2.0.1</div>
+      </div>
+      
+      <div className="absolute top-8 right-8 font-mono text-xs text-muted-foreground/50 text-right">
+        <div>CREATIVE.DEV</div>
+        <div className="mt-1">{aboutData.location}</div>
       </div>
     </section>
   );

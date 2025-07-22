@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,30 +7,44 @@
 
 @layer base {
   :root {
-    --background: 222 47% 3%;
-    --foreground: 180 100% 87%;
-    --card: 225 50% 5%;
-    --card-foreground: 180 100% 87%;
-    --popover: 225 50% 5%;
-    --popover-foreground: 180 100% 87%;
-    --primary: 164 95% 43%;
-    --primary-foreground: 222 47% 3%;
-    --secondary: 225 25% 15%;
-    --secondary-foreground: 180 100% 87%;
-    --muted: 225 25% 12%;
-    --muted-foreground: 180 20% 60%;
-    --accent: 164 95% 43%;
-    --accent-foreground: 222 47% 3%;
+    /* Dark brutalist creative theme */
+    --background: 0 0% 6%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 180 100% 50%;
+    --primary-foreground: 0 0% 6%;
+    --secondary: 320 100% 60%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 120 100% 50%;
+    --accent-foreground: 0 0% 6%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 225 25% 15%;
-    --input: 225 25% 15%;
-    --ring: 164 95% 43%;
-    --radius: 0.75rem;
-    --gradient-primary: linear-gradient(135deg, hsl(164 95% 43%), hsl(180 100% 50%));
-    --gradient-dark: linear-gradient(135deg, hsl(222 47% 3%), hsl(225 50% 5%));
-    --shadow-glow: 0 0 50px hsl(164 95% 43% / 0.3);
-    --shadow-subtle: 0 4px 20px hsl(222 47% 3% / 0.5);
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 15%;
+    --input: 0 0% 12%;
+    --ring: 180 100% 50%;
+    --radius: 0.5rem;
+    
+    /* Creative gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(180 100% 50%), hsl(320 100% 60%));
+    --gradient-secondary: linear-gradient(45deg, hsl(120 100% 50%), hsl(180 100% 50%));
+    --gradient-dark: radial-gradient(ellipse at center, hsl(0 0% 8%) 0%, hsl(0 0% 4%) 100%);
+    --gradient-noise: linear-gradient(90deg, transparent 98%, hsl(180 100% 50% / 0.03) 100%);
+    
+    /* Shadows and effects */
+    --shadow-glow: 0 0 80px hsl(180 100% 50% / 0.3);
+    --shadow-brutal: 8px 8px 0px hsl(320 100% 60%);
+    --shadow-neon: 0 0 20px hsl(180 100% 50%), 0 0 40px hsl(180 100% 50% / 0.5);
+    --shadow-deep: 0 25px 50px -12px hsl(0 0% 0% / 0.8);
+    
+    /* Typography */
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
   }
 
   .dark {
@@ -70,13 +84,16 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
     min-height: 100vh;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior: none;
     font-weight: 400;
     line-height: 1.6;
+    cursor: none;
+    background: var(--gradient-dark);
+    background-attachment: fixed;
   }
 
   html {
@@ -84,8 +101,18 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-weight: 300;
-    line-height: 1.2;
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
   }
 }
 
@@ -115,14 +142,130 @@
   background-clip: text;
 }
 
+.text-gradient-secondary {
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .bg-gradient-dark {
   background: var(--gradient-dark);
+}
+
+.bg-noise {
+  background: var(--gradient-noise);
 }
 
 .shadow-glow {
   box-shadow: var(--shadow-glow);
 }
 
-.shadow-subtle {
-  box-shadow: var(--shadow-subtle);
+.shadow-brutal {
+  box-shadow: var(--shadow-brutal);
+}
+
+.shadow-neon {
+  box-shadow: var(--shadow-neon);
+}
+
+.shadow-deep {
+  box-shadow: var(--shadow-deep);
+}
+
+/* Creative cursor */
+.cursor-creative {
+  width: 20px;
+  height: 20px;
+  border: 2px solid hsl(var(--primary));
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: transform 0.2s ease;
+}
+
+.cursor-creative.hover {
+  transform: scale(1.5);
+  background: hsl(var(--primary) / 0.2);
+}
+
+/* Glitch effect */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  animation: glitch-1 0.5s infinite;
+  color: hsl(var(--primary));
+  z-index: -1;
+}
+
+.glitch::after {
+  animation: glitch-2 0.5s infinite;
+  color: hsl(var(--secondary));
+  z-index: -2;
+}
+
+@keyframes glitch-1 {
+  0%, 14%, 15%, 49%, 50%, 99%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  1%, 13% {
+    transform: translate3d(-2px, 0, 0);
+  }
+  16%, 48% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
+
+@keyframes glitch-2 {
+  0%, 24%, 25%, 54%, 55%, 99%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  1%, 23% {
+    transform: translate3d(2px, 0, 0);
+  }
+  26%, 53% {
+    transform: translate3d(-2px, 0, 0);
+  }
+}
+
+/* Brutal hover effects */
+.brutal-hover {
+  transition: all 0.2s ease;
+}
+
+.brutal-hover:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: var(--shadow-brutal);
+}
+
+/* Neon text */
+.neon-text {
+  color: hsl(var(--primary));
+  text-shadow: var(--shadow-neon);
+  animation: neon-flicker 2s infinite alternate;
+}
+
+@keyframes neon-flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    text-shadow: var(--shadow-neon);
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
 }
