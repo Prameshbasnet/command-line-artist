@@ -1,273 +1,424 @@
-
-import React, { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ExternalLink, Github, Play, Zap, Code2, Sparkles } from 'lucide-react';
+import { ArrowRight, Code2, ExternalLink, Eye, Github, Star, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { projectsData } from '../../data/projects';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ProjectsSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const projectRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'carousel'>('grid');
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title animation with split text
-      const titleChars = titleRef.current?.querySelectorAll('.char');
-      if (titleChars) {
-        gsap.fromTo(titleChars,
-          { opacity: 0, y: 100, rotationX: -90 },
-          {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            duration: 0.8,
-            stagger: 0.05,
-            ease: "back.out(1.7)",
-            scrollTrigger: {
-              trigger: titleRef.current,
-              start: "top 80%",
-            }
-          }
-        );
-      }
+      // Create floating tech symbols
+      const symbols = ['{ }', '< />', '[ ]', '( )', '&&', '||', '=>', '++'];
+      symbols.forEach((symbol) => {
+        const element = document.createElement('div');
+        element.textContent = symbol;
+        element.className = 'floating-symbol';
+        element.style.cssText = `
+          position: absolute;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 1.5rem;
+          color: rgba(0, 255, 255, 0.1);
+          pointer-events: none;
+          z-index: 1;
+        `;
+        
+        element.style.left = Math.random() * 100 + '%';
+        element.style.top = Math.random() * 100 + '%';
+        
+        sectionRef.current?.appendChild(element);
 
-      // Projects grid animation
-      projectRefs.current.forEach((ref, index) => {
-        if (ref) {
-          // Initial state
-          gsap.set(ref, { y: 50, opacity: 0, scale: 0.8 });
+        gsap.to(element, {
+          x: Math.random() * 300 - 150,
+          y: Math.random() * 300 - 150,
+          rotation: 360,
+          duration: Math.random() * 20 + 10,
+          repeat: -1,
+          ease: "none"
+        });
+
+        gsap.to(element, {
+          opacity: 0.3,
+          duration: Math.random() * 3 + 2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut"
+        });
+      });
+
+      // Magnetic mouse effect for project cards
+      const handleMouseMove = (e: MouseEvent) => {
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
           
-          // Entrance animation
-          gsap.to(ref, {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.8,
-            delay: index * 0.15,
-            ease: "elastic.out(1, 0.75)",
-            scrollTrigger: {
-              trigger: ref,
-              start: "top 85%",
-            }
+          gsap.to(card, {
+            rotationY: x / 10,
+            rotationX: -y / 10,
+            duration: 0.6,
+            ease: "power2.out",
+            transformPerspective: 1000
           });
+        });
+      };
 
-          // Parallax effect
-          gsap.to(ref, {
-            y: -20,
-            scrollTrigger: {
-              trigger: ref,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1
-            }
-          });
-        }
-      });
+      sectionRef.current?.addEventListener('mousemove', handleMouseMove);
 
-      // Background particles animation
-      gsap.to('.project-particle', {
-        x: () => gsap.utils.random(-20, 20),
-        y: () => gsap.utils.random(-20, 20),
-        rotation: () => gsap.utils.random(0, 360),
-        duration: 4,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        stagger: 0.1
-      });
-
+      return () => {
+        sectionRef.current?.removeEventListener('mousemove', handleMouseMove);
+      };
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  const handleProjectHover = (index: number, isEntering: boolean) => {
-    const project = projectRefs.current[index];
-    if (!project) return;
-
-    if (isEntering) {
-      setHoveredProject(index);
-      gsap.to(project, {
-        scale: 1.02,
-        rotationY: 5,
-        rotationX: 2,
-        duration: 0.3,
-        ease: "power2.out"
-      });
-      
-      gsap.to(project.querySelector('.project-bg'), {
-        scale: 1.1,
-        opacity: 0.8,
-        duration: 0.5,
-        ease: "power2.out"
-      });
-    } else {
-      setHoveredProject(null);
-      gsap.to(project, {
-        scale: 1,
-        rotationY: 0,
-        rotationX: 0,
-        duration: 0.3,
-        ease: "power2.out"
-      });
-      
-      gsap.to(project.querySelector('.project-bg'), {
-        scale: 1,
-        opacity: 0.2,
-        duration: 0.5,
-        ease: "power2.out"
-      });
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
     }
   };
 
-  return (
-    <section ref={sectionRef} className="py-32 bg-background relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div
-            key={i}
-            className="project-particle absolute w-1 h-1 bg-primary/30 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-      </div>
-      
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-8 relative">
-        {/* Section Header */}
-        <div className="text-center mb-20">
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="w-12 h-0.5 bg-gradient-primary" />
-            <span className="font-mono text-sm text-primary uppercase tracking-wider">FEATURED WORK</span>
-            <div className="w-12 h-0.5 bg-gradient-primary" />
-          </div>
-          
-          <div ref={titleRef} className="mb-6">
-            <h2 className="font-display text-5xl md:text-7xl font-black leading-none">
-              {"PROJECTS".split('').map((char, index) => (
-                <span key={index} className="char inline-block text-gradient">
-                  {char}
-                </span>
-              ))}
-            </h2>
-          </div>
-          
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Digital experiences that <span className="text-primary font-mono">push boundaries</span> and 
-            <span className="text-gradient font-medium"> solve real problems</span>
-          </p>
-        </div>
+  const cardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 100, 
+      scale: 0.8
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1
+    }
+  };
 
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-          {projectsData.map((project, index) => (
-            <div
-              key={index}
-              ref={el => projectRefs.current[index] = el}
-              className="group relative"
-              onMouseEnter={() => handleProjectHover(index, true)}
-              onMouseLeave={() => handleProjectHover(index, false)}
-              data-cursor="hover"
+  const ProjectCard = ({ project, index }: { project: any, index: number }) => {
+    const cardRef = useRef<HTMLDivElement>(null);
+
+    const handleHover = (isHovering: boolean) => {
+      setHoveredProject(isHovering ? index : null);
+      
+      if (cardRef.current) {
+        gsap.to(cardRef.current, {
+          scale: isHovering ? 1.05 : 1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      }
+    };
+
+    return (
+      <motion.div
+        ref={cardRef}
+        className="project-card group relative bg-gradient-to-br from-card/40 to-card/20 backdrop-blur-sm border border-border/50 rounded-2xl overflow-hidden cursor-pointer"
+        variants={cardVariants}
+        onMouseEnter={() => handleHover(true)}
+        onMouseLeave={() => handleHover(false)}
+        onClick={() => setSelectedProject(index)}
+        whileHover={{ 
+          boxShadow: "0 20px 40px rgba(0, 255, 255, 0.2)",
+          borderColor: "rgba(0, 255, 255, 0.5)"
+        }}
+      >
+        {/* Project Image with Overlay */}
+        <div className="relative h-64 overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Code2 className="w-16 h-16 text-primary/40" />
+          </div>
+          
+          {/* Hover Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          
+          {/* Action Buttons */}
+          <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <motion.div
+              className="p-2 bg-primary/20 backdrop-blur-sm rounded-full hover:bg-primary/40 transition-colors cursor-pointer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
-              {/* Project Card */}
-              <div className="relative bg-card border-2 border-border hover:border-primary/50 transition-all duration-500 overflow-hidden">
-                {/* Background Effect */}
-                <div className="project-bg absolute inset-0 bg-gradient-primary opacity-20 scale-100" />
-                
-                {/* Content */}
-                <div className="relative z-10 p-8">
-                  {/* Project Number */}
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="font-mono text-4xl font-black text-primary/30">
-                      {(index + 1).toString().padStart(2, '0')}
-                    </span>
-                    <div className="flex gap-2">
-                      <button className="p-2 border border-border hover:border-primary hover:bg-primary/10 transition-all duration-300 group/btn">
-                        <Github className="w-4 h-4 text-muted-foreground group-hover/btn:text-primary transition-colors" />
-                      </button>
-                      <button className="p-2 border border-border hover:border-primary hover:bg-primary/10 transition-all duration-300 group/btn">
-                        <ExternalLink className="w-4 h-4 text-muted-foreground group-hover/btn:text-primary transition-colors" />
-                      </button>
-                    </div>
-                  </div>
+              <ExternalLink className="w-4 h-4 text-primary" />
+            </motion.div>
+            <motion.div
+              className="p-2 bg-secondary/20 backdrop-blur-sm rounded-full hover:bg-secondary/40 transition-colors cursor-pointer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Github className="w-4 h-4 text-secondary" />
+            </motion.div>
+          </div>
 
-                  {/* Project Title */}
-                  <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-                    {project.name}
-                  </h3>
+          {/* Tech Stack Pills */}
+          <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            {project.technologies?.split(',').slice(0, 3).map((tech: string, techIndex: number) => (
+              <span
+                key={techIndex}
+                className="px-2 py-1 bg-black/50 backdrop-blur-sm text-xs font-mono text-primary rounded-full"
+              >
+                {tech.trim()}
+              </span>
+            ))}
+          </div>
+        </div>
 
-                  {/* Tech Stack */}
-                  <div className="mb-6">
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.split(', ').map((tech, techIndex) => (
-                        <span 
-                          key={techIndex}
-                          className="px-3 py-1 bg-muted border border-primary/20 text-primary text-xs font-mono uppercase tracking-wider hover:bg-primary/10 transition-colors cursor-default"
-                        >
-                          {tech.trim()}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Description */}
-                  <div className="space-y-3">
-                    {project.description.map((desc, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0 opacity-60" />
-                        <p className="text-muted-foreground leading-relaxed text-sm">
-                          {desc}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Project Actions */}
-                  <div className="mt-8 pt-6 border-t border-border/50">
-                    <button className="group/cta relative px-6 py-3 bg-primary text-background font-mono font-bold text-sm uppercase tracking-wider brutal-hover hover:bg-transparent hover:text-primary border-2 border-primary transition-all duration-300 overflow-hidden">
-                      <span className="relative z-10 flex items-center gap-2">
-                        <Play className="w-4 h-4" />
-                        VIEW PROJECT
-                      </span>
-                      <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover/cta:opacity-100 transition-opacity duration-300" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Hover Effects */}
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <Zap className="w-6 h-6 text-primary animate-pulse" />
-                </div>
-              </div>
-
-              {/* Project Index */}
-              <div className="absolute -top-6 -left-6 w-12 h-12 bg-primary text-background font-mono font-black text-lg flex items-center justify-center shadow-brutal z-20">
-                {index + 1}
-              </div>
+        {/* Project Info */}
+        <div className="p-6">
+          <div className="flex items-start justify-between mb-3">
+            <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+              {project.name}
+            </h3>
+            <div className="flex items-center gap-1 text-accent">
+              <Star className="w-4 h-4" />
+              <span className="text-sm font-mono">4.9</span>
             </div>
-          ))}
+          </div>
+          
+          <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">
+            {Array.isArray(project.description) ? project.description[0] : project.description}
+          </p>
+
+          {/* Project Stats */}
+          <div className="flex items-center justify-between text-xs font-mono text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <Eye className="w-3 h-3" />
+              <span>{Math.floor(Math.random() * 500) + 100} views</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Code2 className="w-3 h-3" />
+              <span>{project.technologies?.split(',').length || 0} techs</span>
+            </div>
+          </div>
         </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center mt-20">
-          <button className="group relative px-8 py-4 border-2 border-muted-foreground text-muted-foreground font-mono font-bold text-lg uppercase tracking-wider brutal-hover hover:border-primary hover:text-primary transition-all duration-300">
-            <span className="relative z-10 flex items-center gap-2">
-              <Code2 className="w-5 h-5" />
-              VIEW ALL PROJECTS
-            </span>
-          </button>
+        {/* Glowing Border Effect */}
+        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary via-secondary to-accent p-[1px]">
+            <div className="w-full h-full rounded-2xl bg-card" />
+          </div>
         </div>
+      </motion.div>
+    );
+  };
+
+  return (
+    <section 
+      ref={sectionRef}
+      className="min-h-screen relative py-20 overflow-hidden bg-gradient-to-br from-background via-black to-background"
+    >
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 opacity-30">
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 25% 25%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 75% 75%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+              linear-gradient(45deg, transparent 30%, rgba(0, 255, 255, 0.03) 50%, transparent 70%)
+            `,
+          }}
+        />
       </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="max-w-7xl mx-auto"
+        >
+          {/* Section Header */}
+          <motion.div 
+            variants={cardVariants}
+            className="text-center mb-20"
+          >
+            <h2 className="text-4xl md:text-6xl lg:text-8xl font-bold font-display mb-6">
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                PROJECTS
+              </span>
+            </h2>
+            <div className="w-32 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-8" />
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-mono mb-8">
+              Each project is a piece of my journey, crafted with passion and built to inspire.
+            </p>
+
+            {/* View Mode Toggle */}
+            <div className="flex justify-center gap-2 md:gap-4 mb-12">
+              <motion.button
+                onClick={() => setViewMode('grid')}
+                className={`px-4 md:px-6 py-2 md:py-3 rounded-full font-mono text-sm md:text-base transition-all duration-300 ${
+                  viewMode === 'grid' 
+                    ? 'bg-primary text-black' 
+                    : 'bg-card/30 border border-border text-muted-foreground hover:border-primary'
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                GRID VIEW
+              </motion.button>
+              <motion.button
+                onClick={() => setViewMode('carousel')}
+                className={`px-4 md:px-6 py-2 md:py-3 rounded-full font-mono text-sm md:text-base transition-all duration-300 ${
+                  viewMode === 'carousel' 
+                    ? 'bg-primary text-black' 
+                    : 'bg-card/30 border border-border text-muted-foreground hover:border-primary'
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                SHOWCASE
+              </motion.button>
+            </div>
+          </motion.div>
+
+          {/* Projects Grid */}
+          <AnimatePresence mode="wait">
+            {viewMode === 'grid' && (
+              <motion.div
+                key="grid"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                className="grid md:grid-cols-2 xl:grid-cols-3 gap-8"
+              >
+                {projectsData.map((project, index) => (
+                  <ProjectCard key={index} project={project} index={index} />
+                ))}
+              </motion.div>
+            )}
+
+            {viewMode === 'carousel' && (
+              <motion.div
+                key="carousel"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="relative max-w-4xl mx-auto"
+              >
+                <div className="bg-card/20 backdrop-blur-sm border border-border rounded-3xl p-8">
+                  <h3 className="text-3xl font-bold text-center mb-8 text-primary">Featured Showcase</h3>
+                  <div className="grid md:grid-cols-2 gap-8 items-center">
+                    <div className="bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl p-8 flex items-center justify-center h-64">
+                      <Code2 className="w-24 h-24 text-primary/40" />
+                    </div>
+                    <div className="space-y-6">
+                      <h4 className="text-2xl font-bold">{projectsData[0]?.name}</h4>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {Array.isArray(projectsData[0]?.description) ? projectsData[0].description[0] : projectsData[0]?.description}
+                      </p>
+                      <div className="flex gap-4">
+                        <motion.button
+                          className="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-black font-bold rounded-lg hover:shadow-neon transition-all duration-300"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          VIEW PROJECT
+                        </motion.button>
+                        <motion.button
+                          className="px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary hover:text-black transition-all duration-300"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          SOURCE CODE
+                        </motion.button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* CTA Section */}
+          <motion.div
+            variants={cardVariants}
+            className="text-center mt-20 py-12"
+          >
+            <h3 className="text-4xl font-bold mb-6 font-display">
+              Want to See More?
+            </h3>
+            <p className="text-xl text-muted-foreground mb-8 font-mono">
+              Explore my complete portfolio and discover the stories behind each creation.
+            </p>
+            <motion.button
+              className="px-8 py-4 bg-transparent border-2 border-primary text-primary font-bold rounded-full text-lg hover:bg-primary hover:text-black transition-all duration-300 group"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="flex items-center gap-2">
+                VIEW ALL PROJECTS
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </motion.button>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Project Detail Modal */}
+      <AnimatePresence>
+        {selectedProject !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.5, y: 100 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.5, y: 100 }}
+              className="bg-card border border-border rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-8">
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="text-3xl font-bold text-primary">
+                    {projectsData[selectedProject]?.name}
+                  </h3>
+                  <button
+                    onClick={() => setSelectedProject(null)}
+                    className="p-2 hover:bg-border/20 rounded-full transition-colors"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+                
+                <div className="bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl mb-6 p-12 flex items-center justify-center">
+                  <Code2 className="w-32 h-32 text-primary/40" />
+                </div>
+                
+                <p className="text-muted-foreground leading-relaxed mb-6">
+                  {Array.isArray(projectsData[selectedProject]?.description) 
+                    ? projectsData[selectedProject].description.join(' ') 
+                    : projectsData[selectedProject]?.description}
+                </p>
+                
+                <div className="flex gap-4">
+                  <button className="px-6 py-3 bg-primary text-black font-bold rounded-lg hover:shadow-neon transition-all duration-300">
+                    VIEW LIVE
+                  </button>
+                  <button className="px-6 py-3 border border-border text-foreground rounded-lg hover:border-primary transition-colors">
+                    VIEW CODE
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

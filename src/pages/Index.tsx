@@ -1,37 +1,81 @@
 
-import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import BackgroundEffects from "../components/BackgroundEffects";
+import KonamiCode from "../components/KonamiCode";
 import Navigation from "../components/Navigation";
+import ScrollProgressIndicator from "../components/ScrollProgressIndicator";
+import ContactSection from "../components/sections/ContactSection";
 import HeroSection from "../components/sections/HeroSection";
-import ExperienceSection from "../components/sections/ExperienceSection";
-import ProjectsSection from "../components/sections/ProjectsSection";
+import IntroSequence from "../components/sections/IntroSequence";
+import ProjectsSection from "../components/sections/ProjectsSectionResponsive";
 import SkillsSection from "../components/sections/SkillsSection";
-import EducationSection from "../components/sections/EducationSection";
+import TimelineSection from "../components/sections/TimelineSection";
+import SmoothScrollProvider from "../components/SmoothScrollProvider";
 
 const Index = () => {
+  const [introComplete, setIntroComplete] = useState(false);
+  const [currentSection, setCurrentSection] = useState(0);
+
+  useEffect(() => {
+    // Check if user is on mobile or has visited before
+    const isMobile = window.innerWidth < 768;
+    const hasVisited = localStorage.getItem('portfolio-visited');
+    
+    if (isMobile || hasVisited) {
+      setIntroComplete(true);
+    }
+  }, []);
+
+  const handleIntroComplete = () => {
+    setIntroComplete(true);
+    localStorage.setItem('portfolio-visited', 'true');
+  };
+
   return (
-    <div className="overflow-hidden">
-      <Navigation />
-      
-      <div id="hero">
-        <HeroSection />
+    <SmoothScrollProvider>
+      <div className="relative overflow-hidden bg-black">
+        <BackgroundEffects />
+        <KonamiCode />
+        
+        <AnimatePresence mode="wait">
+          {!introComplete ? (
+            <IntroSequence key="intro" onComplete={handleIntroComplete} />
+          ) : (
+            <motion.div
+              key="main"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+              className="relative z-10"
+            >
+              <Navigation currentSection={currentSection} />
+              <ScrollProgressIndicator />
+              
+              <div id="hero" className="section">
+                <HeroSection />
+              </div>
+              
+              <div id="about" className="section">
+                <TimelineSection />
+              </div>
+              
+              <div id="skills" className="section">
+                <SkillsSection />
+              </div>
+              
+              <div id="projects" className="section">
+                <ProjectsSection />
+              </div>
+              
+              <div id="contact" className="section">
+                <ContactSection />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      
-      <div id="experience">
-        <ExperienceSection />
-      </div>
-      
-      <div id="projects">
-        <ProjectsSection />
-      </div>
-      
-      <div id="skills">
-        <SkillsSection />
-      </div>
-      
-      <div id="education">
-        <EducationSection />
-      </div>
-    </div>
+    </SmoothScrollProvider>
   );
 };
 

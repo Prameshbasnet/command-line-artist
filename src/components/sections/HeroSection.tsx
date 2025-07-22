@@ -1,8 +1,8 @@
 
-import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Github, Linkedin, Mail, ArrowDown, Terminal, Zap } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import { aboutData } from '../../data/about';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -169,16 +169,11 @@ const HeroSection = () => {
       
       {/* Main Content */}
       <div className="relative z-10 text-center px-8 max-w-6xl mx-auto">
-        {/* Status Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-card/50 backdrop-blur-sm border border-primary/30 rounded-full mb-12 brutal-hover">
-          <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-          <span className="font-mono text-sm text-primary">AVAILABLE FOR WORK</span>
-        </div>
 
         {/* Animated Name */}
         <div ref={nameRef} className="mb-8">
           <h1 className="font-display text-6xl md:text-8xl lg:text-9xl font-black leading-none tracking-tighter">
-            {"PRAMESH BASNET".split('').map((char, index) => (
+            {aboutData.name.split('').map((char, index) => (
               <span 
                 key={index} 
                 className={`char inline-block ${char === ' ' ? 'w-4' : ''} text-gradient hover:scale-110 transition-transform cursor-default`}
@@ -192,12 +187,12 @@ const HeroSection = () => {
 
         {/* Animated Title */}
         <div ref={titleRef} className="mb-16">
-          <p className="font-mono text-xl md:text-2xl text-muted-foreground mb-4 glitch" data-text="CREATIVE DEVELOPER">
-            CREATIVE DEVELOPER
+          <p className="font-mono text-xl md:text-2xl text-muted-foreground mb-4 glitch" data-text={aboutData.subtitle}>
+            {aboutData.subtitle}
           </p>
           <p className="text-lg md:text-xl max-w-2xl mx-auto text-muted-foreground/80 leading-relaxed">
-            Crafting <span className="text-primary font-mono">interactive experiences</span> at the intersection of 
-            <span className="text-gradient font-medium"> design & technology</span>
+            {aboutData.summary.split('.')[0]}. <span className="text-primary font-mono">Focused on delivering secure, scalable solutions</span> in the 
+            <span className="text-gradient font-medium"> banking and insurance sectors</span>
           </p>
         </div>
 

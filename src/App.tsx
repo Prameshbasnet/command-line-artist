@@ -1,14 +1,14 @@
 
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import CustomCursorFixed from "./components/CustomCursorFixed";
 import LoadingScreen from "./components/LoadingScreen";
-import CustomCursor from "./components/CustomCursor";
+import Index from "./pages/Index";
+import NotFoundEnhanced from "./pages/NotFoundEnhanced";
 
 // Create a new query client with simple configuration
 const queryClient = new QueryClient({
@@ -30,14 +30,14 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <CustomCursor />
+        <CustomCursorFixed />
         {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
         <Toaster />
         <Sonner />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<NotFoundEnhanced />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

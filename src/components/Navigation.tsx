@@ -1,12 +1,16 @@
 
-import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Menu, X, Terminal } from 'lucide-react';
+import { Menu, Terminal, X } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Navigation = () => {
+interface NavigationProps {
+  currentSection?: number;
+}
+
+const Navigation: React.FC<NavigationProps> = ({ currentSection = 0 }) => {
   const [activeSection, setActiveSection] = useState('hero');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
@@ -77,10 +81,10 @@ const Navigation = () => {
 
   const navItems = [
     { id: 'hero', label: 'HOME', index: '01' },
-    { id: 'experience', label: 'EXPERIENCE', index: '02' },
-    { id: 'projects', label: 'PROJECTS', index: '03' },
-    { id: 'skills', label: 'SKILLS', index: '04' },
-    { id: 'education', label: 'EDUCATION', index: '05' }
+    { id: 'about', label: 'ABOUT', index: '02' },
+    { id: 'skills', label: 'SKILLS', index: '03' },
+    { id: 'projects', label: 'PROJECTS', index: '04' },
+    { id: 'contact', label: 'CONTACT', index: '05' }
   ];
 
   return (
